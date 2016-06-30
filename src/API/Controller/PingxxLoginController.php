@@ -65,6 +65,7 @@ class PingxxLogInController implements ControllerInterface
     public function handle(Request $request)
     {
         $actor = $request->getAttribute('actor');
+        $Referer = $request->getHeader('Referer');
         $params = array_only($request->getParsedBody(), ['identification', 'password']);
 
         $response = $this->apiClient->send(TokenController::class, $actor, [], $params);
@@ -80,9 +81,22 @@ class PingxxLogInController implements ControllerInterface
             event(new UserLoggedIn($this->users->findOrFail($data->userId), $token));
 
             $response = $this->rememberer->remember($response, $token);
-        }elseif ($response->getStatusCode() === 401) {
+        } elseif ($response->getStatusCode() === 401) {
             $response = $this->apiClient->send(PingxxTokenController::class, $actor, [], $params);
-            
+
+            if ($response->getStatusCode() === 200) {
+                $data = json_decode($response->getBody());
+
+                $session = $request->getAttribute('session');
+                $this->authenticator->logIn($session, $data->userId);
+
+                $token = AccessToken::find($data->token);
+
+                event(new UserLoggedIn($this->users->findOrFail($data->userId), $token));
+
+                $response = $this->rememberer->remember($response, $token);
+            }
+
         }
 
 
