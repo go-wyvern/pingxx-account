@@ -17,6 +17,7 @@ use Zend\Diactoros\Response\JsonResponse;
 use Flarum\Core\User;
 use Flarum\Core\Exception\PermissionDeniedException;
 
+
 class PingxxTokenController implements ControllerInterface
 {
     /**
@@ -44,6 +45,7 @@ class PingxxTokenController implements ControllerInterface
                     $user->$k = $v;
                 }
             }
+            $user->create_from = '来自Ping++ Dashboard账户中心';
             $user->save();
 
             if (isset($token)) {

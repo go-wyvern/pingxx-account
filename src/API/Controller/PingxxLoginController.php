@@ -21,6 +21,8 @@ use Flarum\Http\SessionAuthenticator;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Zend\Diactoros\Response\EmptyResponse;
 use Zend\Diactoros\Response\JsonResponse;
+use Dflydev\FigCookies\SetCookie;
+use Dflydev\FigCookies\FigResponseCookies;
 
 class PingxxLogInController implements ControllerInterface
 {
@@ -79,6 +81,12 @@ class PingxxLogInController implements ControllerInterface
             $token = AccessToken::find($data->token);
 
             event(new UserLoggedIn($this->users->findOrFail($data->userId), $token));
+            $response = FigResponseCookies::set(
+                $response,
+                SetCookie::create("lastLoginName")
+                    ->withValue($request->getParsedBody()['identification'])
+                    ->withPath('/')
+            );
 
             $response = $this->rememberer->remember($response, $token);
         } elseif ($response->getStatusCode() === 401) {
@@ -93,6 +101,13 @@ class PingxxLogInController implements ControllerInterface
                 $token = AccessToken::find($data->token);
 
                 event(new UserLoggedIn($this->users->findOrFail($data->userId), $token));
+
+                $response = FigResponseCookies::set(
+                    $response,
+                    SetCookie::create("lastLoginName")
+                        ->withValue($request->getParsedBody()['identification'])
+                        ->withPath('/')
+                );
 
                 $response = $this->rememberer->remember($response, $token);
             }
