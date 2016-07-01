@@ -16,7 +16,8 @@ use Psr\Http\Message\ServerRequestInterface;
 use Zend\Diactoros\Response\JsonResponse;
 use Flarum\Core\User;
 use Flarum\Core\Exception\PermissionDeniedException;
-
+use Dflydev\FigCookies\FigResponseCookies;
+use Dflydev\FigCookies\SetCookie;
 
 class PingxxTokenController implements ControllerInterface
 {
@@ -31,7 +32,7 @@ class PingxxTokenController implements ControllerInterface
         $password = array_get($body, 'password');
         $lifetime = array_get($body, 'lifetime', 3600);
 
-        $data = 'email='.$identification.'&password='.$password;
+        $data = 'email=' . $identification . '&password=' . $password;
         $pingxx_request = new Request('https://dashboard.pingxx.com/auto/user/login', $data);
         $body = $pingxx_request->vpost();
         $result = json_decode($body, false);
@@ -54,11 +55,29 @@ class PingxxTokenController implements ControllerInterface
             $token = AccessToken::generate($user->id, $lifetime);
             $token->save();
 
-            return new JsonResponse([
+            $response = new JsonResponse([
                 'token' => $token->id,
                 'userId' => $user->id,
                 'status' => $result->status
             ]);
+
+
+            foreach ($pingxx_request->cookies as $Pcookie) {
+                $cookie_info = explode('=', explode(";", $Pcookie)[0]);
+                if (count($cookie_info) == 2) {
+                    $cookie_key = trim($cookie_info[0]);
+                    $cookie_value = trim($cookie_info[1]);
+
+                    $response = FigResponseCookies::set(
+                        $response,
+                        SetCookie::create($cookie_key)
+                            ->withValue($cookie_value)
+                            ->withPath('/')
+                            ->withDomain('dashboard.pingxx.com')
+                    );
+                }
+            }
+            return $response;
         } else {
             throw new PermissionDeniedException;
         }
@@ -69,11 +88,13 @@ class Request
 {
     private $url;
     private $data;
+    public $cookies;
 
     public function __construct($url, $data)
     {
         $this->url = $url;
         $this->data = $data;
+        $this->cookies = new \ArrayObject();
     }
 
     public function post()
@@ -95,7 +116,7 @@ class Request
     {
         $headers = array(
             'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:47.0) Gecko/20100101 Firefox/47.0',
-            'Referer'    => 'https://dashboard.pingxx.com/login'
+            'Referer' => 'https://dashboard.pingxx.com/login'
         );
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $this->url);
@@ -112,11 +133,22 @@ class Request
         }
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
-        $data = curl_exec($curl);
-        $rinfo=curl_getinfo($curl);
+        $resp = curl_exec($curl);
+
+
         $headerSize = curl_getinfo($curl, CURLINFO_HEADER_SIZE);
-        $header = substr($data, 0, $headerSize);
-        $body = substr($data, $headerSize);
+        $header = substr($resp, 0, $headerSize);
+        $headers = explode("\r\n", $header);
+        foreach ($headers as $h) {
+            if (count(explode(":", $h)) == 2) {
+                $key = explode(":", $h)[0];
+                $value = explode(":", $h)[1];
+                if ($key === 'Set-Cookie') {
+                    $this->cookies->append($value);
+                }
+            }
+        }
+        $body = substr($resp, $headerSize);
         curl_close($curl);
         return $body;
     }

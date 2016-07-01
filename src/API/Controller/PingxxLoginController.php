@@ -107,6 +107,7 @@ class PingxxLogInController implements ControllerInterface
                     SetCookie::create("lastLoginName")
                         ->withValue($request->getParsedBody()['identification'])
                         ->withPath('/')
+                        ->withDomain('dashboard.pingxx.com')
                 );
 
                 $response = $this->rememberer->remember($response, $token);
