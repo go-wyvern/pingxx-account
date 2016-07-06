@@ -4,7 +4,7 @@
     "description": "Pingxx Account",
     "keywords": ["account"],
     "license": "MIT",
-    "version": "dev-master",
+    "version": "0.1.0",
     "authors": [
         {
             "name": "wyvern",
