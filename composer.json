@@ -31,6 +31,10 @@
                 "backgroundSize": "cover",
                 "backgroundPosition": "center"
             }
+        },
+        "flarum-locale": {
+            "code": "zh",
+            "title": "简体中文"
         }
     }
 }
