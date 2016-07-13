@@ -1,0 +1,40 @@
+{
+    "name": "go-wyvern/pingxx-account",
+    "type": "flarum-extension",
+    "description": "Pingxx Account",
+    "keywords": ["account"],
+    "license": "MIT",
+    "version": "v0.1.1",
+    "authors": [
+        {
+            "name": "wyvern",
+            "email": "wyvern.wu@aliyun.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Pingxx\\Account\\": "src/"
+        }
+    },
+    "support": {
+        "source": "https://github.com/go-wyvern/pingxx-account"
+    },
+    "require": {
+        "flarum/core": "^0.1.0-beta.5"
+    },
+    "extra": {
+        "flarum-extension": {
+            "title": "Pingxx Account",
+            "icon": {
+                "image": "logo-black.svg",
+                "backgroundColor": "#FFFFFF",
+                "backgroundSize": "cover",
+                "backgroundPosition": "center"
+            }
+        },
+        "flarum-locale": {
+            "code": "zh",
+            "title": "简体中文"
+        }
+    }
+}
