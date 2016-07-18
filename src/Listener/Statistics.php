@@ -21,6 +21,8 @@ use Flarum\Event\PostWasPosted;
 use Flarum\Event\PostWasRestored;
 use Flarum\Likes\Event\PostWasLiked;
 use Flarum\Likes\Event\PostWasUnliked;
+use Flarum\Tags\best\Event\DiscussionWasBest;
+use Flarum\Tags\best\Event\DiscussionWasUnbest;
 
 
 class Statistics
@@ -38,18 +40,29 @@ class Statistics
         $events->listen(DiscussionWasDeleted::class, [$this, 'whenDiscussionWasDeleted']);
         $events->listen(PostWasLiked::class, [$this, 'whenPostWasLiked']);
         $events->listen(PostWasUnLiked::class, [$this, 'whenPostWasUnLiked']);
+        $events->listen(DiscussionWasBest::class, [$this, 'whenDiscussionWasBest']);
+        $events->listen(DiscussionWasUnbest::class, [$this, 'whenDiscussionWasUnbest']);
+    }
+
+    public function whenDiscussionWasBest(DiscussionWasBest $event)
+    {
+        $this->updateAgreeCount($event->user, 1);
+    }
+
+    public function whenDiscussionWasUnbest(DiscussionWasBest $event)
+    {
+        $this->updateAgreeCount($event->user, -1);
     }
 
     public function whenPostWasLiked(PostWasLiked $event)
     {
         $this->updatePraiseCount($event->user, 1);
-        $this->updateAgreeCount($event->user, 1);
+
     }
 
     public function whenPostWasUnLiked(PostWasLiked $event)
     {
         $this->updatePraiseCount($event->user, -1);
-        $this->updateAgreeCount($event->user, -1);
     }
 
     /**
@@ -57,7 +70,19 @@ class Statistics
      */
     public function whenPostWasPosted(PostWasPosted $event)
     {
-        $this->updateAnswerCount($event->post, 1);
+        if ($event->post->is_start) {
+//            if ($event->post->discussion->is_article) {
+//                $this->updateDiscussionsCount($event->post->user, 1);
+//            } else {
+//                $this->updateAskCount($event->post->user, 1);
+//            }
+        } else {
+            if ($event->post->discussion->is_article) {
+                $this->updateCommentsCount($event->post->user, 1);
+            } else {
+                $this->updateAnswerCount($event->post->user, 1);
+            }
+        }
     }
 
     /**
@@ -65,7 +90,19 @@ class Statistics
      */
     public function whenPostWasDeleted(PostWasDeleted $event)
     {
-        $this->updateAnswerCount($event->post, -1);
+        if ($event->post->is_start) {
+//            if ($event->post->discussion->is_article) {
+//                $this->updateDiscussionsCount($event->post->user, -1);
+//            } else {
+//                $this->updateAskCount($event->post->user, -1);
+//            }
+        } else {
+            if ($event->post->discussion->is_article) {
+                $this->updateCommentsCount($event->post->user, -1);
+            } else {
+                $this->updateAnswerCount($event->post->user, -1);
+            }
+        }
     }
 
     /**
@@ -73,7 +110,19 @@ class Statistics
      */
     public function whenPostWasHidden(PostWasHidden $event)
     {
-        $this->updateAnswerCount($event->post, -1);
+        if ($event->post->is_start) {
+//            if ($event->post->discussion->is_article) {
+//                $this->updateDiscussionsCount($event->post->user, -1);
+//            } else {
+//                $this->updateAskCount($event->post->user, -1);
+//            }
+        } else {
+            if ($event->post->discussion->is_article) {
+                $this->updateCommentsCount($event->post->user, -1);
+            } else {
+                $this->updateAnswerCount($event->post->user, -1);
+            }
+        }
     }
 
     /**
@@ -81,49 +130,60 @@ class Statistics
      */
     public function whenPostWasRestored(PostWasRestored $event)
     {
-        $this->updateAnswerCount($event->post, 1);
+        if ($event->post->is_start) {
+//            if ($event->post->discussion->is_article) {
+//                $this->updateDiscussionsCount($event->post->user, 1);
+//            } else {
+//                $this->updateAskCount($event->post->user, 1);
+//            }
+        } else {
+            if ($event->post->discussion->is_article) {
+                $this->updateCommentsCount($event->post->user, 1);
+            } else {
+                $this->updateAnswerCount($event->post->user, 1);
+            }
+        }
     }
 
-    /**
-     * @param \Flarum\Events\DiscussionWasStarted $event
-     */
     public function whenDiscussionWasStarted(DiscussionWasStarted $event)
     {
-        $this->updateAskCount($event->discussion, 1);
+        if ($event->discussion->is_article) {
+            $this->updateDiscussionsCount($event->discussion->startUser, 1);
+        } else {
+            $this->updateAskCount($event->discussion->startUser, 1);
+        }
     }
+
 
     /**
      * @param \Flarum\Event\DiscussionWasDeleted $event
      */
     public function whenDiscussionWasDeleted(DiscussionWasDeleted $event)
     {
-        $this->updateAskCount($event->discussion, -1);
+        if ($event->discussion->is_article) {
+            $this->updateDiscussionsCount($event->discussion->startUser, -1);
+        } else {
+            $this->updateAskCount($event->discussion->startUser, -1);
+        }
     }
 
     /**
      * @param Post $post
      * @param int $amount
      */
-    protected function updateAnswerCount(Post $post, $amount)
+    protected function updateAnswerCount(User $user, $amount)
     {
-        $user = $post->user;
-
         if ($user && $user->exists) {
-            $user->ask_count += $amount;
+            $user->answer_count += $amount;
             $user->save();
         }
     }
 
-    /**
-     * @param Discussion $discussion
-     * @param int $amount
-     */
-    protected function updateAskCount(Discussion $discussion, $amount)
+    protected function updateAskCount(User $user, $amount)
     {
-        $user = $discussion->startUser;
 
         if ($user && $user->exists) {
-            $user->answer_count += $amount;
+            $user->ask_count += $amount;
             $user->save();
         }
     }
@@ -140,6 +200,22 @@ class Statistics
     {
         if ($user && $user->exists) {
             $user->agree_count += $amount;
+            $user->save();
+        }
+    }
+
+    protected function updateCommentsCount(User $user, $amount)
+    {
+        if ($user && $user->exists) {
+            $user->comments_count += $amount;
+            $user->save();
+        }
+    }
+
+    protected function updateDiscussionsCount(User $user, $amount)
+    {
+        if ($user && $user->exists) {
+            $user->discussions_count += $amount;
             $user->save();
         }
     }

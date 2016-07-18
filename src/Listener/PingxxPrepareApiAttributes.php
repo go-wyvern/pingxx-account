@@ -9,12 +9,14 @@
 namespace Pingxx\Account\Listener;
 
 use Flarum\Api\Serializer\UserSerializer;
+use Flarum\Api\Serializer\DiscussionSerializer;
+use Flarum\Api\Serializer\PostSerializer;
 use Flarum\Core\User;
 use Flarum\Event\ConfigureModelDates;
 use Flarum\Event\PrepareApiAttributes;
 use Illuminate\Contracts\Events\Dispatcher;
 
-class AddUserCreateFromAttributes
+class PingxxPrepareApiAttributes
 {
     /**
      * @param Dispatcher $events
@@ -35,6 +37,14 @@ class AddUserCreateFromAttributes
             $event->attributes['answer_count'] = $event->model->answer_count;
             $event->attributes['praise_count'] = $event->model->praise_count;
             $event->attributes['agree_count'] = $event->model->agree_count;
+        }
+
+        if ($event->serializer instanceof DiscussionSerializer) {
+            $event->attributes['is_article'] = $event->model->is_article;
+        }
+
+        if ($event->serializer instanceof PostSerializer) {
+            $event->attributes['is_start'] = $event->model->is_start;
         }
     }
 }

@@ -15,7 +15,7 @@ return function (Dispatcher $events) {
         $event->loadLanguagePackFrom(__DIR__);
     });
 
-    $events->subscribe(Listener\AddUserCreateFromAttributes::class);
+    $events->subscribe(Listener\PingxxPrepareApiAttributes::class);
     $events->subscribe(Listener\AddClientAssets::class);
     $events->subscribe(Listener\PingxxLogin::class);
     $events->subscribe(Listener\PingxxUser::class);
