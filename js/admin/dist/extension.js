@@ -1,5 +1,82 @@
 'use strict';
 
+System.register('pingxx-account/addTagTop', ['flarum/extend', 'flarum/components/AdminNav', 'flarum/components/AdminLinkButton', 'pingxx-account/components/TagTopsPage'], function (_export, _context) {
+    "use strict";
+
+    var extend, AdminNav, AdminLinkButton, TagTopsPage;
+
+    _export('default', function () {
+        app.routes.tag_tops = { path: '/tag_tops', component: TagTopsPage.component() };
+
+        app.extensionSettings['pingxx-account'] = function () {
+            return m.route(app.route('tag_tops'));
+        };
+
+        extend(AdminNav.prototype, 'items', function (items) {
+            items.add('tag_tops', AdminLinkButton.component({
+                href: app.route('tag_tops'),
+                icon: 'sort-numeric-asc',
+                children: app.translator.trans('pingxx-account.admin.nav.tag-tops_button'),
+                description: app.translator.trans('pingxx-account.admin.nav.tag-tops_text')
+            }));
+        });
+    });
+
+    return {
+        setters: [function (_flarumExtend) {
+            extend = _flarumExtend.extend;
+        }, function (_flarumComponentsAdminNav) {
+            AdminNav = _flarumComponentsAdminNav.default;
+        }, function (_flarumComponentsAdminLinkButton) {
+            AdminLinkButton = _flarumComponentsAdminLinkButton.default;
+        }, function (_pingxxAccountComponentsTagTopsPage) {
+            TagTopsPage = _pingxxAccountComponentsTagTopsPage.default;
+        }],
+        execute: function () {}
+    };
+});;
+'use strict';
+
+System.register('pingxx-account/addTopsPane', ['flarum/extend', 'flarum/components/AdminNav', 'flarum/components/AdminLinkButton', 'pingxx-account/components/TopsPage', 'pingxx-account/components/Dashboard'], function (_export, _context) {
+    "use strict";
+
+    var extend, AdminNav, AdminLinkButton, TopsPage, Dashboard;
+
+    _export('default', function () {
+        app.routes.dashboard = { path: '/', component: Dashboard.component() };
+        app.routes.tops = { path: '/tops', component: TopsPage.component() };
+
+        app.extensionSettings['pingxx-account'] = function () {
+            return m.route(app.route('tops'));
+        };
+
+        extend(AdminNav.prototype, 'items', function (items) {
+            items.add('tops', AdminLinkButton.component({
+                href: app.route('tops'),
+                icon: 'sort-amount-desc',
+                children: app.translator.trans('pingxx-account.admin.nav.tops_button'),
+                description: app.translator.trans('pingxx-account.admin.nav.tops_text')
+            }));
+        });
+    });
+
+    return {
+        setters: [function (_flarumExtend) {
+            extend = _flarumExtend.extend;
+        }, function (_flarumComponentsAdminNav) {
+            AdminNav = _flarumComponentsAdminNav.default;
+        }, function (_flarumComponentsAdminLinkButton) {
+            AdminLinkButton = _flarumComponentsAdminLinkButton.default;
+        }, function (_pingxxAccountComponentsTopsPage) {
+            TopsPage = _pingxxAccountComponentsTopsPage.default;
+        }, function (_pingxxAccountComponentsDashboard) {
+            Dashboard = _pingxxAccountComponentsDashboard.default;
+        }],
+        execute: function () {}
+    };
+});;
+'use strict';
+
 System.register('pingxx-account/addUsersPane', ['flarum/extend', 'flarum/components/AdminNav', 'flarum/components/AdminLinkButton', 'pingxx-account/components/UsersPage'], function (_export, _context) {
     "use strict";
 
@@ -210,6 +287,268 @@ System.register('pingxx-account/components/CreateUserModal', ['flarum/components
 });;
 'use strict';
 
+System.register('pingxx-account/components/Dashboard', ['flarum/components/Page'], function (_export, _context) {
+    "use strict";
+
+    var Page, Dashboard;
+    return {
+        setters: [function (_flarumComponentsPage) {
+            Page = _flarumComponentsPage.default;
+        }],
+        execute: function () {
+            Dashboard = function (_Page) {
+                babelHelpers.inherits(Dashboard, _Page);
+
+                function Dashboard() {
+                    babelHelpers.classCallCheck(this, Dashboard);
+                    return babelHelpers.possibleConstructorReturn(this, Object.getPrototypeOf(Dashboard).apply(this, arguments));
+                }
+
+                babelHelpers.createClass(Dashboard, [{
+                    key: 'init',
+                    value: function init() {
+                        babelHelpers.get(Object.getPrototypeOf(Dashboard.prototype), 'init', this).call(this);
+                        this.loading = true;
+                        this.flarum = {};
+                        this.flarum.users = [];
+                        this.flarum.discussions = [];
+                        this.flarum.totay_users = [];
+                        this.flarum.totay_discussions = [];
+
+                        this.flarum.totalUsers = 0;
+                        this.flarum.totaytotalUsers = 0;
+
+                        this.flarum.totalDiscussions = 0;
+                        this.flarum.totaytotalDiscussions = 0;
+
+                        this.flarum.totalQuestions = 0;
+                        this.flarum.totaytotalQuestions = 0;
+
+                        this.refreshUser();
+                        this.refreshDiscussion();
+                    }
+                }, {
+                    key: 'refreshUser',
+                    value: function refreshUser() {
+                        var _this2 = this;
+
+                        return this.loadUsers().then(function (results) {
+                            _this2.flarum.users = [];
+                            _this2.parseUsers(results);
+                        }, function () {
+                            _this2.loading = false;
+                            m.redraw();
+                        });
+                    }
+                }, {
+                    key: 'refreshDiscussion',
+                    value: function refreshDiscussion() {
+                        var _this3 = this;
+
+                        return this.loadDiscussions().then(function (results) {
+                            _this3.flarum.discussions = [];
+                            _this3.parseDiscussions(results);
+                        }, function () {
+                            _this3.loading = false;
+                            m.redraw();
+                        });
+                    }
+                }, {
+                    key: 'loadUsers',
+                    value: function loadUsers() {
+                        return app.store.find('users');
+                    }
+                }, {
+                    key: 'loadDiscussions',
+                    value: function loadDiscussions() {
+                        return app.store.find('discussions');
+                    }
+                }, {
+                    key: 'parseUsers',
+                    value: function parseUsers(results) {
+                        var _this4 = this;
+
+                        [].push.apply(this.flarum.users, results);
+                        this.flarum.totalUsers = results.length;
+                        var minute = 1000 * 60;
+                        var hour = minute * 60;
+                        var day = hour * 24;
+                        results.map(function (user) {
+                            if ((new Date().getTime() - user.joinTime()) / day < 1) {
+                                _this4.flarum.totay_users.push(user);
+                            }
+                        });
+                        this.flarum.totaytotalUsers = this.flarum.totay_users.length;
+                        this.loading = false;
+
+                        m.lazyRedraw();
+                        return results;
+                    }
+                }, {
+                    key: 'parseDiscussions',
+                    value: function parseDiscussions(results) {
+                        var _this5 = this;
+
+                        [].push.apply(this.flarum.discussions, results);
+                        this.flarum.totalDiscussions = results.length;
+                        this.loading = false;
+                        var minute = 1000 * 60;
+                        var hour = minute * 60;
+                        var day = hour * 24;
+                        var month = day * 10;
+                        results.map(function (discussion) {
+                            if ((new Date().getTime() - discussion.startTime()) / month < 1) {
+                                _this5.flarum.totay_discussions.push(discussion);
+                            }
+                        });
+                        this.flarum.totaytotalDiscussions = this.flarum.totay_discussions.length;
+
+                        m.lazyRedraw();
+                        return results;
+                    }
+                }, {
+                    key: 'view',
+                    value: function view() {
+                        this.topIndex = 0;
+                        return m(
+                            'div',
+                            { className: 'Dashboard' },
+                            m(
+                                'div',
+                                { className: 'Dashboard-options' },
+                                m(
+                                    'div',
+                                    { className: 'container' },
+                                    m(
+                                        'p',
+                                        null,
+                                        app.translator.trans('pingxx-account.admin.dashboard.about_flarum')
+                                    )
+                                )
+                            ),
+                            m(
+                                'div',
+                                { className: 'UserPage-users' },
+                                m(
+                                    'div',
+                                    { className: 'container' },
+                                    m(
+                                        'table',
+                                        { className: 'PermissionGrid UserGridWidth' },
+                                        m(
+                                            'thead',
+                                            null,
+                                            m(
+                                                'tr',
+                                                null,
+                                                m('td', null),
+                                                m(
+                                                    'th',
+                                                    null,
+                                                    '总体数据'
+                                                ),
+                                                m(
+                                                    'th',
+                                                    null,
+                                                    '今日数据'
+                                                )
+                                            )
+                                        ),
+                                        m(
+                                            'tbody',
+                                            null,
+                                            m(
+                                                'tr',
+                                                { className: 'PermissionGrid-section' },
+                                                m(
+                                                    'th',
+                                                    null,
+                                                    '基础数据'
+                                                ),
+                                                m('td', null),
+                                                m('td', null)
+                                            ),
+                                            m(
+                                                'tr',
+                                                { className: 'PermissionGrid-child' },
+                                                m(
+                                                    'th',
+                                                    null,
+                                                    m('i', { 'class': 'icon fa fa-fw fa-registered' }),
+                                                    '用户注册总量'
+                                                ),
+                                                m(
+                                                    'td',
+                                                    null,
+                                                    this.flarum.totalUsers
+                                                ),
+                                                m(
+                                                    'td',
+                                                    null,
+                                                    this.flarum.totaytotalUsers
+                                                )
+                                            ),
+                                            m(
+                                                'tr',
+                                                { className: 'PermissionGrid-child' },
+                                                m(
+                                                    'th',
+                                                    null,
+                                                    m('i', { 'class': 'icon fa fa-fw fa-question-circle' }),
+                                                    '问题提问总量'
+                                                ),
+                                                m(
+                                                    'td',
+                                                    null,
+                                                    this.flarum.totalQuestions
+                                                ),
+                                                m(
+                                                    'td',
+                                                    null,
+                                                    this.flarum.totaytotalQuestions
+                                                )
+                                            ),
+                                            m(
+                                                'tr',
+                                                { className: 'PermissionGrid-child' },
+                                                m(
+                                                    'th',
+                                                    null,
+                                                    m('i', { 'class': 'icon fa fa-fw fa-file-text-o' }),
+                                                    '文章发表总量'
+                                                ),
+                                                m(
+                                                    'td',
+                                                    null,
+                                                    this.flarum.totalDiscussions
+                                                ),
+                                                m(
+                                                    'td',
+                                                    null,
+                                                    this.flarum.totaytotalDiscussions
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        );
+                    }
+                }, {
+                    key: 'config',
+                    value: function config(isInitialized) {
+                        if (isInitialized) return;
+                    }
+                }]);
+                return Dashboard;
+            }(Page);
+
+            _export('default', Dashboard);
+        }
+    };
+});;
+'use strict';
+
 System.register('pingxx-account/components/EditUserModal', ['flarum/components/Modal', 'flarum/components/Button', 'flarum/components/Badge', 'flarum/models/User'], function (_export, _context) {
     "use strict";
 
@@ -365,6 +704,414 @@ System.register('pingxx-account/components/EditUserModal', ['flarum/components/M
             }(Modal);
 
             _export('default', EditUserModal);
+        }
+    };
+});;
+"use strict";
+
+System.register("pingxx-account/components/TagTopsPage", ["flarum/components/Page"], function (_export, _context) {
+    "use strict";
+
+    var Page, TagTopsPage;
+    return {
+        setters: [function (_flarumComponentsPage) {
+            Page = _flarumComponentsPage.default;
+        }],
+        execute: function () {
+            TagTopsPage = function (_Page) {
+                babelHelpers.inherits(TagTopsPage, _Page);
+
+                function TagTopsPage() {
+                    babelHelpers.classCallCheck(this, TagTopsPage);
+                    return babelHelpers.possibleConstructorReturn(this, Object.getPrototypeOf(TagTopsPage).apply(this, arguments));
+                }
+
+                babelHelpers.createClass(TagTopsPage, [{
+                    key: "view",
+                    value: function view() {
+                        var _this2 = this;
+
+                        this.topIndex = 0;
+                        return m(
+                            "div",
+                            { className: "Dashboard" },
+                            m(
+                                "div",
+                                { className: "Dashboard-options" },
+                                m(
+                                    "div",
+                                    { className: "container" },
+                                    m(
+                                        "p",
+                                        null,
+                                        app.translator.trans('pingxx-account.admin.tops.tops_text')
+                                    )
+                                )
+                            ),
+                            m(
+                                "div",
+                                { className: "UserPage-users" },
+                                m(
+                                    "div",
+                                    { className: "container" },
+                                    m(
+                                        "div",
+                                        null,
+                                        m(
+                                            "table",
+                                            { className: "UserGrid UserGridWidth" },
+                                            m(
+                                                "thead",
+                                                null,
+                                                m(
+                                                    "tr",
+                                                    null,
+                                                    m("th", null),
+                                                    m(
+                                                        "th",
+                                                        null,
+                                                        "标签名称"
+                                                    ),
+                                                    m(
+                                                        "th",
+                                                        null,
+                                                        "文章总量"
+                                                    )
+                                                )
+                                            ),
+                                            m(
+                                                "tbody",
+                                                null,
+                                                app.store.all('tags').sort(function (a, b) {
+                                                    return b.discussionsCount() - a.discussionsCount();
+                                                }).map(function (tag) {
+                                                    _this2.topIndex = _this2.topIndex + 1;
+                                                    return m(
+                                                        "tr",
+                                                        null,
+                                                        m(
+                                                            "td",
+                                                            { className: "ranking" },
+                                                            _this2.topIndex
+                                                        ),
+                                                        m(
+                                                            "td",
+                                                            null,
+                                                            tag.name()
+                                                        ),
+                                                        m(
+                                                            "td",
+                                                            null,
+                                                            tag.discussionsCount()
+                                                        )
+                                                    );
+                                                })
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        );
+                    }
+                }, {
+                    key: "config",
+                    value: function config(isInitialized) {
+                        if (isInitialized) return;
+
+                        var dashboard = this;
+
+                        this.$(".userData .default").attr("class", "active");
+
+                        this.$(".userData li").click(function (e) {
+                            console.log("click");
+                            $(".userData li").attr("class", "");
+                            $(this).attr("class", "active");
+
+                            dashboard.attr = $(this).find("a").text();
+                            if (dashboard.attr == '问题提问总量') {
+                                dashboard.sort = 'askActive';
+                            } else if (dashboard.attr == '文章发表总量') {
+                                dashboard.sort = 'discussActive';
+                            } else if (dashboard.attr == '问题回答总量') {
+                                dashboard.sort = 'answerActive';
+                            } else if (dashboard.attr == '文章评论总量') {
+                                dashboard.sort = 'commentsActive';
+                            }
+                            dashboard.refresh();
+                        });
+                    }
+                }]);
+                return TagTopsPage;
+            }(Page);
+
+            _export("default", TagTopsPage);
+        }
+    };
+});;
+'use strict';
+
+System.register('pingxx-account/components/TopsPage', ['flarum/components/Page'], function (_export, _context) {
+    "use strict";
+
+    var Page, TopsPage;
+    return {
+        setters: [function (_flarumComponentsPage) {
+            Page = _flarumComponentsPage.default;
+        }],
+        execute: function () {
+            TopsPage = function (_Page) {
+                babelHelpers.inherits(TopsPage, _Page);
+
+                function TopsPage() {
+                    babelHelpers.classCallCheck(this, TopsPage);
+                    return babelHelpers.possibleConstructorReturn(this, Object.getPrototypeOf(TopsPage).apply(this, arguments));
+                }
+
+                babelHelpers.createClass(TopsPage, [{
+                    key: 'init',
+                    value: function init() {
+                        babelHelpers.get(Object.getPrototypeOf(TopsPage.prototype), 'init', this).call(this);
+                        this.loading = true;
+                        this.attr = "问题提问总量";
+                        this.sort = 'discussactive';
+                        this.topIndex = 0;
+                        this.users = [];
+
+                        this.refresh();
+                    }
+                }, {
+                    key: 'refresh',
+                    value: function refresh() {
+                        var _this2 = this;
+
+                        return this.loadResults().then(function (results) {
+                            _this2.users = [];
+                            _this2.topIndex = 0;
+                            _this2.parseTopUsers(results);
+                        }, function () {
+                            _this2.loading = false;
+                            m.redraw();
+                        });
+                    }
+                }, {
+                    key: 'loadResults',
+                    value: function loadResults() {
+                        return app.store.find('users', {
+                            sort: this.sortMap()[this.sort],
+                            page: {
+                                limit: 20
+                            }
+                        });
+                    }
+                }, {
+                    key: 'sortMap',
+                    value: function sortMap() {
+                        var map = {};
+                        map.commentsActive = '-commentsCount';
+                        map.discussActive = '-discussionsCount';
+                        map.askActive = '-askCount';
+                        map.answerActive = '-answerCount';
+                        map.newest = '-joinTime';
+                        map.oldest = 'joinTime';
+
+                        return map;
+                    }
+                }, {
+                    key: 'parseTopUsers',
+                    value: function parseTopUsers(results) {
+                        [].push.apply(this.users, results);
+
+                        this.loading = false;
+
+                        m.lazyRedraw();
+
+                        return results;
+                    }
+                }, {
+                    key: 'view',
+                    value: function view() {
+                        var _this3 = this;
+
+                        this.topIndex = 0;
+                        return m(
+                            'div',
+                            { className: 'Dashboard' },
+                            m(
+                                'div',
+                                { className: 'Dashboard-options' },
+                                m(
+                                    'div',
+                                    { className: 'container' },
+                                    m(
+                                        'p',
+                                        null,
+                                        app.translator.trans('pingxx-account.admin.tops.tops_text')
+                                    )
+                                )
+                            ),
+                            m(
+                                'div',
+                                { className: 'UserPage-users' },
+                                m(
+                                    'div',
+                                    { className: 'container' },
+                                    m(
+                                        'ul',
+                                        { 'class': 'nav nav-tabs userData' },
+                                        m(
+                                            'li',
+                                            { role: 'presentation', 'class': 'default' },
+                                            m(
+                                                'a',
+                                                null,
+                                                '问题提问总量'
+                                            )
+                                        ),
+                                        m(
+                                            'li',
+                                            { role: 'presentation' },
+                                            m(
+                                                'a',
+                                                null,
+                                                '问题回答总量'
+                                            )
+                                        ),
+                                        m(
+                                            'li',
+                                            { role: 'presentation' },
+                                            m(
+                                                'a',
+                                                null,
+                                                '文章发表总量'
+                                            )
+                                        ),
+                                        m(
+                                            'li',
+                                            { role: 'presentation' },
+                                            m(
+                                                'a',
+                                                null,
+                                                '文章评论总量'
+                                            )
+                                        ),
+                                        m(
+                                            'li',
+                                            { role: 'presentation' },
+                                            m(
+                                                'a',
+                                                null,
+                                                '被点赞总量'
+                                            )
+                                        ),
+                                        m(
+                                            'li',
+                                            { role: 'presentation' },
+                                            m(
+                                                'a',
+                                                null,
+                                                '被赞同总量'
+                                            )
+                                        )
+                                    ),
+                                    m(
+                                        'div',
+                                        null,
+                                        m(
+                                            'table',
+                                            { className: 'UserGrid UserGridWidth' },
+                                            m(
+                                                'thead',
+                                                null,
+                                                m(
+                                                    'tr',
+                                                    null,
+                                                    m('td', null),
+                                                    m(
+                                                        'th',
+                                                        null,
+                                                        '用户名'
+                                                    ),
+                                                    m(
+                                                        'th',
+                                                        null,
+                                                        '邮箱'
+                                                    ),
+                                                    m(
+                                                        'th',
+                                                        null,
+                                                        this.attr
+                                                    )
+                                                )
+                                            ),
+                                            m(
+                                                'tbody',
+                                                null,
+                                                this.users.map(function (user) {
+                                                    _this3.topIndex = _this3.topIndex + 1;
+                                                    return m(
+                                                        'tr',
+                                                        null,
+                                                        m(
+                                                            'td',
+                                                            { className: 'ranking' },
+                                                            _this3.topIndex
+                                                        ),
+                                                        m(
+                                                            'td',
+                                                            null,
+                                                            user.username()
+                                                        ),
+                                                        m(
+                                                            'td',
+                                                            null,
+                                                            user.email()
+                                                        ),
+                                                        m(
+                                                            'td',
+                                                            null,
+                                                            _this3.attr == '文章发表总量' ? user.discussionsCount() : _this3.attr == '文章评论总量' ? user.commentsCount() : _this3.attr == '问题提问总量' ? user.ask_count() : _this3.attr == '问题回答总量' ? user.answer_count() : _this3.attr == '被点赞总量' ? user.praise_count() : _this3.attr == '被赞同总量' ? user.agree_count() : ''
+                                                        )
+                                                    );
+                                                })
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        );
+                    }
+                }, {
+                    key: 'config',
+                    value: function config(isInitialized) {
+                        if (isInitialized) return;
+
+                        var dashboard = this;
+
+                        this.$(".userData .default").attr("class", "active");
+
+                        this.$(".userData li").click(function (e) {
+                            console.log("click");
+                            $(".userData li").attr("class", "");
+                            $(this).attr("class", "active");
+
+                            dashboard.attr = $(this).find("a").text();
+                            if (dashboard.attr == '问题提问总量') {
+                                dashboard.sort = 'askActive';
+                            } else if (dashboard.attr == '文章发表总量') {
+                                dashboard.sort = 'discussActive';
+                            } else if (dashboard.attr == '问题回答总量') {
+                                dashboard.sort = 'answerActive';
+                            } else if (dashboard.attr == '文章评论总量') {
+                                dashboard.sort = 'commentsActive';
+                            }
+                            dashboard.refresh();
+                        });
+                    }
+                }]);
+                return TopsPage;
+            }(Page);
+
+            _export('default', TopsPage);
         }
     };
 });;
@@ -876,7 +1623,7 @@ System.register('pingxx-account/components/UsersPage', ['flarum/components/Page'
                                     { className: 'container' },
                                     m(
                                         'table',
-                                        { className: 'UserGrid' },
+                                        { className: 'UserGrid UserTableWidth' },
                                         m(
                                             'thead',
                                             null,
@@ -1067,7 +1814,6 @@ System.register('pingxx-account/components/UsersPage', ['flarum/components/Page'
                                 case 13:
                                     // Return
                                     e.preventDefault();
-                                    console.log("===");
                                     if (_this6.search.value()) {
                                         _this6.page = 1;
                                         _this6.query = _this6.search.value();
@@ -1096,10 +1842,10 @@ System.register('pingxx-account/components/UsersPage', ['flarum/components/Page'
 });;
 'use strict';
 
-System.register('pingxx-account/main', ['flarum/extend', 'flarum/app', 'flarum/Model', 'pingxx-account/addUsersPane'], function (_export, _context) {
+System.register('pingxx-account/main', ['flarum/extend', 'flarum/app', 'flarum/Model', 'pingxx-account/addUsersPane', 'pingxx-account/addTopsPane', 'pingxx-account/addTagTop', 'flarum/tags/models/Tag'], function (_export, _context) {
     "use strict";
 
-    var extend, app, Model, addUsersPane;
+    var extend, app, Model, addUsersPane, addTopsPane, addTagTop, Tag;
     return {
         setters: [function (_flarumExtend) {
             extend = _flarumExtend.extend;
@@ -1109,14 +1855,28 @@ System.register('pingxx-account/main', ['flarum/extend', 'flarum/app', 'flarum/M
             Model = _flarumModel.default;
         }, function (_pingxxAccountAddUsersPane) {
             addUsersPane = _pingxxAccountAddUsersPane.default;
+        }, function (_pingxxAccountAddTopsPane) {
+            addTopsPane = _pingxxAccountAddTopsPane.default;
+        }, function (_pingxxAccountAddTagTop) {
+            addTagTop = _pingxxAccountAddTagTop.default;
+        }, function (_flarumTagsModelsTag) {
+            Tag = _flarumTagsModelsTag.default;
         }],
         execute: function () {
 
             app.initializers.add('pingxx-account', function () {
                 app.store.models.users.prototype.create_from = Model.attribute('create_from');
                 app.store.models.users.prototype.suspend_until = Model.attribute('suspendUntil');
+                app.store.models.users.prototype.ask_count = Model.attribute('ask_count');
+                app.store.models.users.prototype.answer_count = Model.attribute('answer_count');
+                app.store.models.users.prototype.praise_count = Model.attribute('praise_count');
+                app.store.models.users.prototype.agree_count = Model.attribute('agree_count');
+
+                app.store.models.tags = Tag;
 
                 addUsersPane();
+                addTopsPane();
+                addTagTop();
             });
         }
     };

@@ -6,6 +6,8 @@ pingxx-account:
 
   # Translations in this namespace are used by the admin interface.
   admin:
+    dashboard:
+      about_flarum: Ping++开发者社区概览
 
     # These translations are used in the Basics page.
     basics:
@@ -15,6 +17,13 @@ pingxx-account:
     nav:
       users_button: => pingxx-account.ref.users
       users_text: 管理站点的用户列表。
+      tops_button: 用户榜单
+      tops_text: Ping++开发者论坛榜单
+      tag-tops_button: 分类榜单
+      tag-tops_text: 分类榜单
+
+    tops:
+      tops_text: 用户榜单top20
 
     edit_user:
       title: 更新用户

@@ -31,6 +31,10 @@ class AddUserCreateFromAttributes
     {
         if ($event->serializer instanceof UserSerializer) {
             $event->attributes['create_from'] = $event->model->create_from;
+            $event->attributes['ask_count'] = $event->model->ask_count;
+            $event->attributes['answer_count'] = $event->model->answer_count;
+            $event->attributes['praise_count'] = $event->model->praise_count;
+            $event->attributes['agree_count'] = $event->model->agree_count;
         }
     }
 }

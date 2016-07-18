@@ -116,7 +116,7 @@ export default class UsersPage extends Page {
                 </div>
                 <div className="UserPage-users">
                     <div className="container">
-                        <table className="UserGrid">
+                        <table className="UserGrid UserTableWidth">
                         <thead>
                         <th></th>
                         <th>用户名</th>
@@ -210,7 +210,6 @@ export default class UsersPage extends Page {
                         break;
                     case 13: // Return
                         e.preventDefault();
-                        console.log("===");
                         if (this.search.value()) {
                             this.page=1;
                             this.query=this.search.value();
