@@ -312,8 +312,10 @@ System.register('pingxx-account/components/Dashboard', ['flarum/components/Page'
                         this.flarum = {};
                         this.flarum.users = [];
                         this.flarum.discussions = [];
+                        this.flarum.questions = [];
                         this.flarum.totay_users = [];
                         this.flarum.totay_discussions = [];
+                        this.flarum.totay_questions = [];
 
                         this.flarum.totalUsers = 0;
                         this.flarum.totaytotalUsers = 0;
@@ -326,6 +328,7 @@ System.register('pingxx-account/components/Dashboard', ['flarum/components/Page'
 
                         this.refreshUser();
                         this.refreshDiscussion();
+                        this.refreshQuestion();
                     }
                 }, {
                     key: 'refreshUser',
@@ -354,6 +357,19 @@ System.register('pingxx-account/components/Dashboard', ['flarum/components/Page'
                         });
                     }
                 }, {
+                    key: 'refreshQuestion',
+                    value: function refreshQuestion() {
+                        var _this4 = this;
+
+                        return this.loadQuestions().then(function (results) {
+                            _this4.flarum.questions = [];
+                            _this4.parseQuestions(results);
+                        }, function () {
+                            _this4.loading = false;
+                            m.redraw();
+                        });
+                    }
+                }, {
                     key: 'loadUsers',
                     value: function loadUsers() {
                         return app.store.find('users');
@@ -361,12 +377,21 @@ System.register('pingxx-account/components/Dashboard', ['flarum/components/Page'
                 }, {
                     key: 'loadDiscussions',
                     value: function loadDiscussions() {
-                        return app.store.find('discussions');
+                        return app.store.find('discussions', {
+                            filter: { 'is_article': 1 }
+                        });
+                    }
+                }, {
+                    key: 'loadQuestions',
+                    value: function loadQuestions() {
+                        return app.store.find('discussions', {
+                            filter: { 'is_article': 0 }
+                        });
                     }
                 }, {
                     key: 'parseUsers',
                     value: function parseUsers(results) {
-                        var _this4 = this;
+                        var _this5 = this;
 
                         [].push.apply(this.flarum.users, results);
                         this.flarum.totalUsers = results.length;
@@ -375,7 +400,7 @@ System.register('pingxx-account/components/Dashboard', ['flarum/components/Page'
                         var day = hour * 24;
                         results.map(function (user) {
                             if ((new Date().getTime() - user.joinTime()) / day < 1) {
-                                _this4.flarum.totay_users.push(user);
+                                _this5.flarum.totay_users.push(user);
                             }
                         });
                         this.flarum.totaytotalUsers = this.flarum.totay_users.length;
@@ -387,7 +412,7 @@ System.register('pingxx-account/components/Dashboard', ['flarum/components/Page'
                 }, {
                     key: 'parseDiscussions',
                     value: function parseDiscussions(results) {
-                        var _this5 = this;
+                        var _this6 = this;
 
                         [].push.apply(this.flarum.discussions, results);
                         this.flarum.totalDiscussions = results.length;
@@ -398,10 +423,32 @@ System.register('pingxx-account/components/Dashboard', ['flarum/components/Page'
                         var month = day * 10;
                         results.map(function (discussion) {
                             if ((new Date().getTime() - discussion.startTime()) / month < 1) {
-                                _this5.flarum.totay_discussions.push(discussion);
+                                _this6.flarum.totay_discussions.push(discussion);
                             }
                         });
                         this.flarum.totaytotalDiscussions = this.flarum.totay_discussions.length;
+
+                        m.lazyRedraw();
+                        return results;
+                    }
+                }, {
+                    key: 'parseQuestions',
+                    value: function parseQuestions(results) {
+                        var _this7 = this;
+
+                        [].push.apply(this.flarum.questions, results);
+                        this.flarum.totalQuestions = results.length;
+                        this.loading = false;
+                        var minute = 1000 * 60;
+                        var hour = minute * 60;
+                        var day = hour * 24;
+                        var month = day * 10;
+                        results.map(function (question) {
+                            if ((new Date().getTime() - question.startTime()) / month < 1) {
+                                _this7.flarum.totay_questions.push(question);
+                            }
+                        });
+                        this.flarum.totaytotalQuestions = this.flarum.totay_questions.length;
 
                         m.lazyRedraw();
                         return results;
@@ -1871,6 +1918,8 @@ System.register('pingxx-account/main', ['flarum/extend', 'flarum/app', 'flarum/M
                 app.store.models.users.prototype.answer_count = Model.attribute('answer_count');
                 app.store.models.users.prototype.praise_count = Model.attribute('praise_count');
                 app.store.models.users.prototype.agree_count = Model.attribute('agree_count');
+
+                app.store.models.discussions.prototype.agree_count = Model.attribute('is_article');
 
                 app.store.models.tags = Tag;
 

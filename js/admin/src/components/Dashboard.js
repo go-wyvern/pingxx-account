@@ -10,8 +10,10 @@ export default class Dashboard extends Page {
         this.flarum = {};
         this.flarum.users = [];
         this.flarum.discussions = [];
+        this.flarum.questions = [];
         this.flarum.totay_users = [];
         this.flarum.totay_discussions = [];
+        this.flarum.totay_questions = [];
 
         this.flarum.totalUsers = 0;
         this.flarum.totaytotalUsers = 0;
@@ -24,6 +26,7 @@ export default class Dashboard extends Page {
 
         this.refreshUser();
         this.refreshDiscussion();
+        this.refreshQuestion();
     }
 
 
@@ -53,12 +56,33 @@ export default class Dashboard extends Page {
         );
     }
 
+    refreshQuestion() {
+        return this.loadQuestions().then(
+            results => {
+                this.flarum.questions = [];
+                this.parseQuestions(results);
+            },
+            () => {
+                this.loading = false;
+                m.redraw();
+            }
+        );
+    }
+
     loadUsers() {
         return app.store.find('users');
     }
 
     loadDiscussions() {
-        return app.store.find('discussions');
+        return app.store.find('discussions', {
+            filter: {'is_article': 1}
+        });
+    }
+
+    loadQuestions() {
+        return app.store.find('discussions', {
+            filter: {'is_article': 0}
+        });
     }
 
     parseUsers(results) {
@@ -93,6 +117,25 @@ export default class Dashboard extends Page {
             }
         });
         this.flarum.totaytotalDiscussions = this.flarum.totay_discussions.length;
+
+        m.lazyRedraw();
+        return results;
+    }
+
+    parseQuestions(results) {
+        [].push.apply(this.flarum.questions, results);
+        this.flarum.totalQuestions = results.length;
+        this.loading = false;
+        var minute = 1000 * 60;
+        var hour = minute * 60;
+        var day = hour * 24;
+        var month = day * 10;
+        results.map(question => {
+            if ((new Date().getTime() - question.startTime()) / month < 1) {
+                this.flarum.totay_questions.push(question);
+            }
+        });
+        this.flarum.totaytotalQuestions = this.flarum.totay_questions.length;
 
         m.lazyRedraw();
         return results;
