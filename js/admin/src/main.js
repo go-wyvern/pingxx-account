@@ -2,9 +2,11 @@ import { extend } from 'flarum/extend';
 import app from 'flarum/app';
 import Model from 'flarum/Model';
 import addUsersPane from 'pingxx-account/addUsersPane';
+
 import addTopsPane from 'pingxx-account/addTopsPane';
 import addTagTop from 'pingxx-account/addTagTop';
 import Tag from 'flarum/tags/models/Tag';
+
 
 app.initializers.add('pingxx-account', () => {
     app.store.models.users.prototype.create_from = Model.attribute('create_from');
@@ -19,4 +21,5 @@ app.initializers.add('pingxx-account', () => {
     addUsersPane();
     addTopsPane();
     addTagTop();
+
 });

@@ -1,144 +1,153 @@
-'use strict';
-
-System.register('pingxx-account/addTagTop', ['flarum/extend', 'flarum/components/AdminNav', 'flarum/components/AdminLinkButton', 'pingxx-account/components/TagTopsPage'], function (_export, _context) {
-    "use strict";
+System.register('pingxx-account/addTagTop', ['flarum/extend', 'flarum/components/AdminNav', 'flarum/components/AdminLinkButton', 'pingxx-account/components/TagTopsPage'], function (_export) {
+    /**
+     * Created by wyvern on 16/7/17.
+     */
+    'use strict';
 
     var extend, AdminNav, AdminLinkButton, TagTopsPage;
-
-    _export('default', function () {
-        app.routes.tag_tops = { path: '/tag_tops', component: TagTopsPage.component() };
-
-        app.extensionSettings['pingxx-account'] = function () {
-            return m.route(app.route('tag_tops'));
-        };
-
-        extend(AdminNav.prototype, 'items', function (items) {
-            items.add('tag_tops', AdminLinkButton.component({
-                href: app.route('tag_tops'),
-                icon: 'sort-numeric-asc',
-                children: app.translator.trans('pingxx-account.admin.nav.tag-tops_button'),
-                description: app.translator.trans('pingxx-account.admin.nav.tag-tops_text')
-            }));
-        });
-    });
-
     return {
         setters: [function (_flarumExtend) {
             extend = _flarumExtend.extend;
         }, function (_flarumComponentsAdminNav) {
-            AdminNav = _flarumComponentsAdminNav.default;
+            AdminNav = _flarumComponentsAdminNav['default'];
         }, function (_flarumComponentsAdminLinkButton) {
-            AdminLinkButton = _flarumComponentsAdminLinkButton.default;
+            AdminLinkButton = _flarumComponentsAdminLinkButton['default'];
         }, function (_pingxxAccountComponentsTagTopsPage) {
-            TagTopsPage = _pingxxAccountComponentsTagTopsPage.default;
+            TagTopsPage = _pingxxAccountComponentsTagTopsPage['default'];
         }],
-        execute: function () {}
+        execute: function () {
+            _export('default', function () {
+                app.routes.tag_tops = { path: '/tag_tops', component: TagTopsPage.component() };
+
+                app.extensionSettings['pingxx-account'] = function () {
+                    return m.route(app.route('tag_tops'));
+                };
+
+                extend(AdminNav.prototype, 'items', function (items) {
+                    items.add('tag_tops', AdminLinkButton.component({
+                        href: app.route('tag_tops'),
+                        icon: 'sort-numeric-asc',
+                        children: app.translator.trans('pingxx-account.admin.nav.tag-tops_button'),
+                        description: app.translator.trans('pingxx-account.admin.nav.tag-tops_text')
+                    }));
+                });
+            });
+        }
     };
 });;
-'use strict';
-
-System.register('pingxx-account/addTopsPane', ['flarum/extend', 'flarum/components/AdminNav', 'flarum/components/AdminLinkButton', 'pingxx-account/components/TopsPage', 'pingxx-account/components/Dashboard'], function (_export, _context) {
-    "use strict";
+System.register('pingxx-account/addTopsPane', ['flarum/extend', 'flarum/components/AdminNav', 'flarum/components/AdminLinkButton', 'pingxx-account/components/TopsPage', 'pingxx-account/components/Dashboard'], function (_export) {
+    /**
+     * Created by wyvern on 16/7/17.
+     */
+    'use strict';
 
     var extend, AdminNav, AdminLinkButton, TopsPage, Dashboard;
-
-    _export('default', function () {
-        app.routes.dashboard = { path: '/', component: Dashboard.component() };
-        app.routes.tops = { path: '/tops', component: TopsPage.component() };
-
-        app.extensionSettings['pingxx-account'] = function () {
-            return m.route(app.route('tops'));
-        };
-
-        extend(AdminNav.prototype, 'items', function (items) {
-            items.add('tops', AdminLinkButton.component({
-                href: app.route('tops'),
-                icon: 'sort-amount-desc',
-                children: app.translator.trans('pingxx-account.admin.nav.tops_button'),
-                description: app.translator.trans('pingxx-account.admin.nav.tops_text')
-            }));
-        });
-    });
-
     return {
         setters: [function (_flarumExtend) {
             extend = _flarumExtend.extend;
         }, function (_flarumComponentsAdminNav) {
-            AdminNav = _flarumComponentsAdminNav.default;
+            AdminNav = _flarumComponentsAdminNav['default'];
         }, function (_flarumComponentsAdminLinkButton) {
-            AdminLinkButton = _flarumComponentsAdminLinkButton.default;
+            AdminLinkButton = _flarumComponentsAdminLinkButton['default'];
         }, function (_pingxxAccountComponentsTopsPage) {
-            TopsPage = _pingxxAccountComponentsTopsPage.default;
+            TopsPage = _pingxxAccountComponentsTopsPage['default'];
         }, function (_pingxxAccountComponentsDashboard) {
-            Dashboard = _pingxxAccountComponentsDashboard.default;
+            Dashboard = _pingxxAccountComponentsDashboard['default'];
         }],
-        execute: function () {}
+        execute: function () {
+            _export('default', function () {
+                app.routes.dashboard = { path: '/', component: Dashboard.component() };
+                app.routes.tops = { path: '/tops', component: TopsPage.component() };
+
+                app.extensionSettings['pingxx-account'] = function () {
+                    return m.route(app.route('tops'));
+                };
+
+                extend(AdminNav.prototype, 'items', function (items) {
+                    items.add('tops', AdminLinkButton.component({
+                        href: app.route('tops'),
+                        icon: 'sort-amount-desc',
+                        children: app.translator.trans('pingxx-account.admin.nav.tops_button'),
+                        description: app.translator.trans('pingxx-account.admin.nav.tops_text')
+                    }));
+                });
+            });
+        }
     };
 });;
-'use strict';
-
-System.register('pingxx-account/addUsersPane', ['flarum/extend', 'flarum/components/AdminNav', 'flarum/components/AdminLinkButton', 'pingxx-account/components/UsersPage'], function (_export, _context) {
-    "use strict";
+System.register('pingxx-account/addUsersPane', ['flarum/extend', 'flarum/components/AdminNav', 'flarum/components/AdminLinkButton', 'pingxx-account/components/UsersPage'], function (_export) {
+    /**
+     * Created by wyvern on 16/7/1.
+     */
+    'use strict';
 
     var extend, AdminNav, AdminLinkButton, UsersPage;
-
-    _export('default', function () {
-        app.routes.users = { path: '/users', component: UsersPage.component() };
-
-        app.extensionSettings['pingxx-account'] = function () {
-            return m.route(app.route('users'));
-        };
-
-        extend(AdminNav.prototype, 'items', function (items) {
-            items.add('users', AdminLinkButton.component({
-                href: app.route('users'),
-                icon: 'users',
-                children: app.translator.trans('pingxx-account.admin.nav.users_button'),
-                description: app.translator.trans('pingxx-account.admin.nav.users_text')
-            }));
-        });
-    });
-
     return {
         setters: [function (_flarumExtend) {
             extend = _flarumExtend.extend;
         }, function (_flarumComponentsAdminNav) {
-            AdminNav = _flarumComponentsAdminNav.default;
+            AdminNav = _flarumComponentsAdminNav['default'];
         }, function (_flarumComponentsAdminLinkButton) {
-            AdminLinkButton = _flarumComponentsAdminLinkButton.default;
+            AdminLinkButton = _flarumComponentsAdminLinkButton['default'];
         }, function (_pingxxAccountComponentsUsersPage) {
-            UsersPage = _pingxxAccountComponentsUsersPage.default;
+            UsersPage = _pingxxAccountComponentsUsersPage['default'];
         }],
-        execute: function () {}
+        execute: function () {
+            _export('default', function () {
+                app.routes.users = { path: '/users', component: UsersPage.component() };
+
+                app.extensionSettings['pingxx-account'] = function () {
+                    return m.route(app.route('users'));
+                };
+
+                extend(AdminNav.prototype, 'items', function (items) {
+                    items.add('users', AdminLinkButton.component({
+                        href: app.route('users'),
+                        icon: 'users',
+                        children: app.translator.trans('pingxx-account.admin.nav.users_button'),
+                        description: app.translator.trans('pingxx-account.admin.nav.users_text')
+                    }));
+                });
+            });
+        }
     };
 });;
-'use strict';
+System.register('pingxx-account/components/CreateUserModal', ['flarum/components/Modal', 'flarum/components/LogInModal', 'flarum/helpers/avatar', 'flarum/components/Button', 'flarum/components/LogInButtons', 'flarum/utils/extractText'], function (_export) {
 
-System.register('pingxx-account/components/CreateUserModal', ['flarum/components/Modal', 'flarum/components/LogInModal', 'flarum/helpers/avatar', 'flarum/components/Button', 'flarum/components/LogInButtons', 'flarum/utils/extractText'], function (_export, _context) {
-    "use strict";
+    /**
+     * The `SignUpModal` component displays a modal dialog with a singup form.
+     *
+     * ### Props
+     *
+     * - `username`
+     * - `email`
+     * - `password`
+     * - `token` An email token to sign up with.
+     */
+    'use strict';
 
     var Modal, LogInModal, avatar, Button, LogInButtons, extractText, EditUserModal;
     return {
         setters: [function (_flarumComponentsModal) {
-            Modal = _flarumComponentsModal.default;
+            Modal = _flarumComponentsModal['default'];
         }, function (_flarumComponentsLogInModal) {
-            LogInModal = _flarumComponentsLogInModal.default;
+            LogInModal = _flarumComponentsLogInModal['default'];
         }, function (_flarumHelpersAvatar) {
-            avatar = _flarumHelpersAvatar.default;
+            avatar = _flarumHelpersAvatar['default'];
         }, function (_flarumComponentsButton) {
-            Button = _flarumComponentsButton.default;
+            Button = _flarumComponentsButton['default'];
         }, function (_flarumComponentsLogInButtons) {
-            LogInButtons = _flarumComponentsLogInButtons.default;
+            LogInButtons = _flarumComponentsLogInButtons['default'];
         }, function (_flarumUtilsExtractText) {
-            extractText = _flarumUtilsExtractText.default;
+            extractText = _flarumUtilsExtractText['default'];
         }],
         execute: function () {
-            EditUserModal = function (_Modal) {
+            EditUserModal = (function (_Modal) {
                 babelHelpers.inherits(EditUserModal, _Modal);
 
                 function EditUserModal() {
                     babelHelpers.classCallCheck(this, EditUserModal);
-                    return babelHelpers.possibleConstructorReturn(this, Object.getPrototypeOf(EditUserModal).apply(this, arguments));
+                    babelHelpers.get(Object.getPrototypeOf(EditUserModal.prototype), 'constructor', this).apply(this, arguments);
                 }
 
                 babelHelpers.createClass(EditUserModal, [{
@@ -257,6 +266,13 @@ System.register('pingxx-account/components/CreateUserModal', ['flarum/components
                             return window.location.reload();
                         }, this.loaded.bind(this));
                     }
+
+                    /**
+                     * Get the data that should be submitted in the sign-up request.
+                     *
+                     * @return {Object}
+                     * @public
+                     */
                 }, {
                     key: 'submitData',
                     value: function submitData() {
@@ -279,29 +295,30 @@ System.register('pingxx-account/components/CreateUserModal', ['flarum/components
                     }
                 }]);
                 return EditUserModal;
-            }(Modal);
+            })(Modal);
 
             _export('default', EditUserModal);
         }
     };
 });;
-'use strict';
-
-System.register('pingxx-account/components/Dashboard', ['flarum/components/Page'], function (_export, _context) {
-    "use strict";
+System.register('pingxx-account/components/Dashboard', ['flarum/components/Page'], function (_export) {
+    /**
+     * Created by wyvern on 16/7/1.
+     */
+    'use strict';
 
     var Page, Dashboard;
     return {
         setters: [function (_flarumComponentsPage) {
-            Page = _flarumComponentsPage.default;
+            Page = _flarumComponentsPage['default'];
         }],
         execute: function () {
-            Dashboard = function (_Page) {
+            Dashboard = (function (_Page) {
                 babelHelpers.inherits(Dashboard, _Page);
 
                 function Dashboard() {
                     babelHelpers.classCallCheck(this, Dashboard);
-                    return babelHelpers.possibleConstructorReturn(this, Object.getPrototypeOf(Dashboard).apply(this, arguments));
+                    babelHelpers.get(Object.getPrototypeOf(Dashboard.prototype), 'constructor', this).apply(this, arguments);
                 }
 
                 babelHelpers.createClass(Dashboard, [{
@@ -330,26 +347,26 @@ System.register('pingxx-account/components/Dashboard', ['flarum/components/Page'
                 }, {
                     key: 'refreshUser',
                     value: function refreshUser() {
-                        var _this2 = this;
+                        var _this = this;
 
                         return this.loadUsers().then(function (results) {
-                            _this2.flarum.users = [];
-                            _this2.parseUsers(results);
+                            _this.flarum.users = [];
+                            _this.parseUsers(results);
                         }, function () {
-                            _this2.loading = false;
+                            _this.loading = false;
                             m.redraw();
                         });
                     }
                 }, {
                     key: 'refreshDiscussion',
                     value: function refreshDiscussion() {
-                        var _this3 = this;
+                        var _this2 = this;
 
                         return this.loadDiscussions().then(function (results) {
-                            _this3.flarum.discussions = [];
-                            _this3.parseDiscussions(results);
+                            _this2.flarum.discussions = [];
+                            _this2.parseDiscussions(results);
                         }, function () {
-                            _this3.loading = false;
+                            _this2.loading = false;
                             m.redraw();
                         });
                     }
@@ -366,7 +383,7 @@ System.register('pingxx-account/components/Dashboard', ['flarum/components/Page'
                 }, {
                     key: 'parseUsers',
                     value: function parseUsers(results) {
-                        var _this4 = this;
+                        var _this3 = this;
 
                         [].push.apply(this.flarum.users, results);
                         this.flarum.totalUsers = results.length;
@@ -375,7 +392,7 @@ System.register('pingxx-account/components/Dashboard', ['flarum/components/Page'
                         var day = hour * 24;
                         results.map(function (user) {
                             if ((new Date().getTime() - user.joinTime()) / day < 1) {
-                                _this4.flarum.totay_users.push(user);
+                                _this3.flarum.totay_users.push(user);
                             }
                         });
                         this.flarum.totaytotalUsers = this.flarum.totay_users.length;
@@ -387,7 +404,7 @@ System.register('pingxx-account/components/Dashboard', ['flarum/components/Page'
                 }, {
                     key: 'parseDiscussions',
                     value: function parseDiscussions(results) {
-                        var _this5 = this;
+                        var _this4 = this;
 
                         [].push.apply(this.flarum.discussions, results);
                         this.flarum.totalDiscussions = results.length;
@@ -398,7 +415,7 @@ System.register('pingxx-account/components/Dashboard', ['flarum/components/Page'
                         var month = day * 10;
                         results.map(function (discussion) {
                             if ((new Date().getTime() - discussion.startTime()) / month < 1) {
-                                _this5.flarum.totay_discussions.push(discussion);
+                                _this4.flarum.totay_discussions.push(discussion);
                             }
                         });
                         this.flarum.totaytotalDiscussions = this.flarum.totay_discussions.length;
@@ -541,35 +558,38 @@ System.register('pingxx-account/components/Dashboard', ['flarum/components/Page'
                     }
                 }]);
                 return Dashboard;
-            }(Page);
+            })(Page);
 
             _export('default', Dashboard);
         }
     };
 });;
-'use strict';
+System.register('pingxx-account/components/EditUserModal', ['flarum/components/Modal', 'flarum/components/Button', 'flarum/components/Badge', 'flarum/models/User'], function (_export) {
 
-System.register('pingxx-account/components/EditUserModal', ['flarum/components/Modal', 'flarum/components/Button', 'flarum/components/Badge', 'flarum/models/User'], function (_export, _context) {
-    "use strict";
+    /**
+     * The `EditGroupModal` component shows a modal dialog which allows the user
+     * to create or edit a group.
+     */
+    'use strict';
 
     var Modal, Button, Badge, User, EditUserModal;
     return {
         setters: [function (_flarumComponentsModal) {
-            Modal = _flarumComponentsModal.default;
+            Modal = _flarumComponentsModal['default'];
         }, function (_flarumComponentsButton) {
-            Button = _flarumComponentsButton.default;
+            Button = _flarumComponentsButton['default'];
         }, function (_flarumComponentsBadge) {
-            Badge = _flarumComponentsBadge.default;
+            Badge = _flarumComponentsBadge['default'];
         }, function (_flarumModelsUser) {
-            User = _flarumModelsUser.default;
+            User = _flarumModelsUser['default'];
         }],
         execute: function () {
-            EditUserModal = function (_Modal) {
+            EditUserModal = (function (_Modal) {
                 babelHelpers.inherits(EditUserModal, _Modal);
 
                 function EditUserModal() {
                     babelHelpers.classCallCheck(this, EditUserModal);
-                    return babelHelpers.possibleConstructorReturn(this, Object.getPrototypeOf(EditUserModal).apply(this, arguments));
+                    babelHelpers.get(Object.getPrototypeOf(EditUserModal.prototype), 'constructor', this).apply(this, arguments);
                 }
 
                 babelHelpers.createClass(EditUserModal, [{
@@ -669,7 +689,7 @@ System.register('pingxx-account/components/EditUserModal', ['flarum/components/M
                 }, {
                     key: 'onsubmit',
                     value: function onsubmit(e) {
-                        var _this2 = this;
+                        var _this = this;
 
                         e.preventDefault();
 
@@ -681,55 +701,56 @@ System.register('pingxx-account/components/EditUserModal', ['flarum/components/M
                             data.password = this.password();
                         }
 
-                        this.user.save(data, { errorHandler: this.onerror.bind(this) }).then(this.hide.bind(this)).catch(function () {
-                            _this2.loading = false;
+                        this.user.save(data, { errorHandler: this.onerror.bind(this) }).then(this.hide.bind(this))['catch'](function () {
+                            _this.loading = false;
                             m.redraw();
                         });
                     }
                 }, {
                     key: 'deleteUser',
                     value: function deleteUser() {
-                        var _this3 = this;
+                        var _this2 = this;
 
                         if (confirm(app.translator.trans('pingxx-account.admin.edit_user.delete_confirmation'))) {
-                            this.user.delete().then(function () {
+                            this.user['delete']().then(function () {
                                 m.redraw();
-                                _this3.hide();
+                                _this2.hide();
                                 window.location.reload();
                             });
                         }
                     }
                 }]);
                 return EditUserModal;
-            }(Modal);
+            })(Modal);
 
             _export('default', EditUserModal);
         }
     };
 });;
-"use strict";
-
-System.register("pingxx-account/components/TagTopsPage", ["flarum/components/Page"], function (_export, _context) {
+System.register("pingxx-account/components/TagTopsPage", ["flarum/components/Page"], function (_export) {
+    /**
+     * Created by wyvern on 16/7/17.
+     */
     "use strict";
 
     var Page, TagTopsPage;
     return {
         setters: [function (_flarumComponentsPage) {
-            Page = _flarumComponentsPage.default;
+            Page = _flarumComponentsPage["default"];
         }],
         execute: function () {
-            TagTopsPage = function (_Page) {
+            TagTopsPage = (function (_Page) {
                 babelHelpers.inherits(TagTopsPage, _Page);
 
                 function TagTopsPage() {
                     babelHelpers.classCallCheck(this, TagTopsPage);
-                    return babelHelpers.possibleConstructorReturn(this, Object.getPrototypeOf(TagTopsPage).apply(this, arguments));
+                    babelHelpers.get(Object.getPrototypeOf(TagTopsPage.prototype), "constructor", this).apply(this, arguments);
                 }
 
                 babelHelpers.createClass(TagTopsPage, [{
                     key: "view",
                     value: function view() {
-                        var _this2 = this;
+                        var _this = this;
 
                         this.topIndex = 0;
                         return m(
@@ -785,14 +806,14 @@ System.register("pingxx-account/components/TagTopsPage", ["flarum/components/Pag
                                                 app.store.all('tags').sort(function (a, b) {
                                                     return b.discussionsCount() - a.discussionsCount();
                                                 }).map(function (tag) {
-                                                    _this2.topIndex = _this2.topIndex + 1;
+                                                    _this.topIndex = _this.topIndex + 1;
                                                     return m(
                                                         "tr",
                                                         null,
                                                         m(
                                                             "td",
                                                             { className: "ranking" },
-                                                            _this2.topIndex
+                                                            _this.topIndex
                                                         ),
                                                         m(
                                                             "td",
@@ -842,29 +863,30 @@ System.register("pingxx-account/components/TagTopsPage", ["flarum/components/Pag
                     }
                 }]);
                 return TagTopsPage;
-            }(Page);
+            })(Page);
 
             _export("default", TagTopsPage);
         }
     };
 });;
-'use strict';
-
-System.register('pingxx-account/components/TopsPage', ['flarum/components/Page'], function (_export, _context) {
-    "use strict";
+System.register('pingxx-account/components/TopsPage', ['flarum/components/Page'], function (_export) {
+    /**
+     * Created by wyvern on 16/7/17.
+     */
+    'use strict';
 
     var Page, TopsPage;
     return {
         setters: [function (_flarumComponentsPage) {
-            Page = _flarumComponentsPage.default;
+            Page = _flarumComponentsPage['default'];
         }],
         execute: function () {
-            TopsPage = function (_Page) {
+            TopsPage = (function (_Page) {
                 babelHelpers.inherits(TopsPage, _Page);
 
                 function TopsPage() {
                     babelHelpers.classCallCheck(this, TopsPage);
-                    return babelHelpers.possibleConstructorReturn(this, Object.getPrototypeOf(TopsPage).apply(this, arguments));
+                    babelHelpers.get(Object.getPrototypeOf(TopsPage.prototype), 'constructor', this).apply(this, arguments);
                 }
 
                 babelHelpers.createClass(TopsPage, [{
@@ -882,14 +904,14 @@ System.register('pingxx-account/components/TopsPage', ['flarum/components/Page']
                 }, {
                     key: 'refresh',
                     value: function refresh() {
-                        var _this2 = this;
+                        var _this = this;
 
                         return this.loadResults().then(function (results) {
-                            _this2.users = [];
-                            _this2.topIndex = 0;
-                            _this2.parseTopUsers(results);
+                            _this.users = [];
+                            _this.topIndex = 0;
+                            _this.parseTopUsers(results);
                         }, function () {
-                            _this2.loading = false;
+                            _this.loading = false;
                             m.redraw();
                         });
                     }
@@ -930,7 +952,7 @@ System.register('pingxx-account/components/TopsPage', ['flarum/components/Page']
                 }, {
                     key: 'view',
                     value: function view() {
-                        var _this3 = this;
+                        var _this2 = this;
 
                         this.topIndex = 0;
                         return m(
@@ -1047,14 +1069,14 @@ System.register('pingxx-account/components/TopsPage', ['flarum/components/Page']
                                                 'tbody',
                                                 null,
                                                 this.users.map(function (user) {
-                                                    _this3.topIndex = _this3.topIndex + 1;
+                                                    _this2.topIndex = _this2.topIndex + 1;
                                                     return m(
                                                         'tr',
                                                         null,
                                                         m(
                                                             'td',
                                                             { className: 'ranking' },
-                                                            _this3.topIndex
+                                                            _this2.topIndex
                                                         ),
                                                         m(
                                                             'td',
@@ -1069,7 +1091,7 @@ System.register('pingxx-account/components/TopsPage', ['flarum/components/Page']
                                                         m(
                                                             'td',
                                                             null,
-                                                            _this3.attr == '文章发表总量' ? user.discussionsCount() : _this3.attr == '文章评论总量' ? user.commentsCount() : _this3.attr == '问题提问总量' ? user.ask_count() : _this3.attr == '问题回答总量' ? user.answer_count() : _this3.attr == '被点赞总量' ? user.praise_count() : _this3.attr == '被赞同总量' ? user.agree_count() : ''
+                                                            _this2.attr == '文章发表总量' ? user.discussionsCount() : _this2.attr == '文章评论总量' ? user.commentsCount() : _this2.attr == '问题提问总量' ? user.ask_count() : _this2.attr == '问题回答总量' ? user.answer_count() : _this2.attr == '被点赞总量' ? user.praise_count() : _this2.attr == '被赞同总量' ? user.agree_count() : ''
                                                         )
                                                     );
                                                 })
@@ -1109,41 +1131,52 @@ System.register('pingxx-account/components/TopsPage', ['flarum/components/Page']
                     }
                 }]);
                 return TopsPage;
-            }(Page);
+            })(Page);
 
             _export('default', TopsPage);
         }
     };
 });;
-'use strict';
+System.register('pingxx-account/components/UserSearch', ['flarum/Component', 'flarum/components/LoadingIndicator', 'flarum/utils/ItemList', 'flarum/utils/classList', 'flarum/utils/extractText', 'flarum/helpers/icon', 'pingxx-account/components/UserSearchSource'], function (_export) {
+    /**
+     * Created by wyvern on 16/7/5.
+     */
 
-System.register('pingxx-account/components/UserSearch', ['flarum/Component', 'flarum/components/LoadingIndicator', 'flarum/utils/ItemList', 'flarum/utils/classList', 'flarum/utils/extractText', 'flarum/helpers/icon', 'pingxx-account/components/UserSearchSource'], function (_export, _context) {
-    "use strict";
+    /**
+     * The `Search` component displays a menu of as-you-type results from a variety
+     * of sources.
+     *
+     * The search box will be 'activated' if the app's current controller implements
+     * a `searching` method that returns a truthy value. If this is the case, an 'x'
+     * button will be shown next to the search field, and clicking it will call the
+     * `clearSearch` method on the controller.
+     */
+    'use strict';
 
     var Component, LoadingIndicator, ItemList, classList, extractText, icon, UsersSearchSource, UserSearch;
     return {
         setters: [function (_flarumComponent) {
-            Component = _flarumComponent.default;
+            Component = _flarumComponent['default'];
         }, function (_flarumComponentsLoadingIndicator) {
-            LoadingIndicator = _flarumComponentsLoadingIndicator.default;
+            LoadingIndicator = _flarumComponentsLoadingIndicator['default'];
         }, function (_flarumUtilsItemList) {
-            ItemList = _flarumUtilsItemList.default;
+            ItemList = _flarumUtilsItemList['default'];
         }, function (_flarumUtilsClassList) {
-            classList = _flarumUtilsClassList.default;
+            classList = _flarumUtilsClassList['default'];
         }, function (_flarumUtilsExtractText) {
-            extractText = _flarumUtilsExtractText.default;
+            extractText = _flarumUtilsExtractText['default'];
         }, function (_flarumHelpersIcon) {
-            icon = _flarumHelpersIcon.default;
+            icon = _flarumHelpersIcon['default'];
         }, function (_pingxxAccountComponentsUserSearchSource) {
-            UsersSearchSource = _pingxxAccountComponentsUserSearchSource.default;
+            UsersSearchSource = _pingxxAccountComponentsUserSearchSource['default'];
         }],
         execute: function () {
-            UserSearch = function (_Component) {
+            UserSearch = (function (_Component) {
                 babelHelpers.inherits(UserSearch, _Component);
 
                 function UserSearch() {
                     babelHelpers.classCallCheck(this, UserSearch);
-                    return babelHelpers.possibleConstructorReturn(this, Object.getPrototypeOf(UserSearch).apply(this, arguments));
+                    babelHelpers.get(Object.getPrototypeOf(UserSearch.prototype), 'constructor', this).apply(this, arguments);
                 }
 
                 babelHelpers.createClass(UserSearch, [{
@@ -1197,7 +1230,7 @@ System.register('pingxx-account/components/UserSearch', ['flarum/Component', 'fl
                 }, {
                     key: 'view',
                     value: function view() {
-                        var _this2 = this;
+                        var _this = this;
 
                         var currentSearch = this.getCurrentSearch();
 
@@ -1222,11 +1255,11 @@ System.register('pingxx-account/components/UserSearch', ['flarum/Component', 'fl
                                     placeholder: extractText(app.translator.trans('pingxx-account.admin.users.search.search_placeholder')),
                                     value: this.value(),
                                     oninput: m.withAttr('value', this.value),
-                                    onfocus: function onfocus() {
-                                        return _this2.hasFocus = true;
+                                    onfocus: function () {
+                                        return _this.hasFocus = true;
                                     },
-                                    onblur: function onblur() {
-                                        return _this2.hasFocus = false;
+                                    onblur: function () {
+                                        return _this.hasFocus = false;
                                     } }),
                                 this.loadingSources ? LoadingIndicator.component({ size: 'tiny', className: 'Button Button--icon Button--link' }) : currentSearch ? m(
                                     'button',
@@ -1238,7 +1271,7 @@ System.register('pingxx-account/components/UserSearch', ['flarum/Component', 'fl
                                 'ul',
                                 { className: 'Dropdown-menu Search-results' },
                                 this.value() && this.hasFocus ? this.sources.map(function (source) {
-                                    return source.view(_this2.value());
+                                    return source.view(_this.value());
                                 }) : ''
                             )
                         );
@@ -1246,7 +1279,7 @@ System.register('pingxx-account/components/UserSearch', ['flarum/Component', 'fl
                 }, {
                     key: 'config',
                     value: function config(isInitialized) {
-                        var _this3 = this;
+                        var _this2 = this;
 
                         // Highlight the item that is currently selected.
                         this.setIndex(this.getCurrentNumericIndex());
@@ -1258,7 +1291,7 @@ System.register('pingxx-account/components/UserSearch', ['flarum/Component', 'fl
                         this.$('.Search-results').on('mousedown', function (e) {
                             return e.preventDefault();
                         }).on('click', function () {
-                            return _this3.$('input').blur();
+                            return _this2.$('input').blur();
                         })
 
                         // Whenever the mouse is hovered over a search result, highlight it.
@@ -1301,11 +1334,21 @@ System.register('pingxx-account/components/UserSearch', ['flarum/Component', 'fl
                             }).select();
                         });
                     }
+
+                    /**
+                     * Get the active search in the app's current controller.
+                     *
+                     * @return {String}
+                     */
                 }, {
                     key: 'getCurrentSearch',
                     value: function getCurrentSearch() {
                         return app.current && typeof app.current.searching === 'function' && app.current.searching();
                     }
+
+                    /**
+                     * Clear the search input and the current controller's active search.
+                     */
                 }, {
                     key: 'clear',
                     value: function clear() {
@@ -1317,6 +1360,12 @@ System.register('pingxx-account/components/UserSearch', ['flarum/Component', 'fl
                             m.redraw();
                         }
                     }
+
+                    /**
+                     * Build an item list of SearchSources.
+                     *
+                     * @return {ItemList}
+                     */
                 }, {
                     key: 'sourceItems',
                     value: function sourceItems() {
@@ -1326,16 +1375,35 @@ System.register('pingxx-account/components/UserSearch', ['flarum/Component', 'fl
 
                         return items;
                     }
+
+                    /**
+                     * Get all of the search result items that are selectable.
+                     *
+                     * @return {jQuery}
+                     */
                 }, {
                     key: 'selectableItems',
                     value: function selectableItems() {
                         return this.$('.Search-results > li:not(.Dropdown-header)');
                     }
+
+                    /**
+                     * Get the position of the currently selected search result item.
+                     *
+                     * @return {Integer}
+                     */
                 }, {
                     key: 'getCurrentNumericIndex',
                     value: function getCurrentNumericIndex() {
                         return this.selectableItems().index(this.getItem(this.index));
                     }
+
+                    /**
+                     * Get the <li> in the search results with the given index (numeric or named).
+                     *
+                     * @param {String} index
+                     * @return {DOMElement}
+                     */
                 }, {
                     key: 'getItem',
                     value: function getItem(index) {
@@ -1348,6 +1416,15 @@ System.register('pingxx-account/components/UserSearch', ['flarum/Component', 'fl
 
                         return $item;
                     }
+
+                    /**
+                     * Set the currently-selected search result item to the one with the given
+                     * index.
+                     *
+                     * @param {Integer} index
+                     * @param {Boolean} scrollToItem Whether or not to scroll the dropdown so that
+                     *     the item is in view.
+                     */
                 }, {
                     key: 'setIndex',
                     value: function setIndex(index, scrollToItem) {
@@ -1372,7 +1449,7 @@ System.register('pingxx-account/components/UserSearch', ['flarum/Component', 'fl
                             var itemTop = $item.offset().top;
                             var itemBottom = itemTop + $item.outerHeight();
 
-                            var scrollTop = void 0;
+                            var scrollTop = undefined;
                             if (itemTop < dropdownTop) {
                                 scrollTop = dropdownScroll - dropdownTop + itemTop - parseInt($dropdown.css('padding-top'), 10);
                             } else if (itemBottom > dropdownBottom) {
@@ -1386,30 +1463,35 @@ System.register('pingxx-account/components/UserSearch', ['flarum/Component', 'fl
                     }
                 }]);
                 return UserSearch;
-            }(Component);
+            })(Component);
 
             _export('default', UserSearch);
         }
     };
 });;
-'use strict';
+System.register('pingxx-account/components/UserSearchSource', ['flarum/helpers/highlight', 'flarum/helpers/avatar', 'flarum/helpers/username', 'pingxx-account/components/EditUserModal'], function (_export) {
 
-System.register('pingxx-account/components/UserSearchSource', ['flarum/helpers/highlight', 'flarum/helpers/avatar', 'flarum/helpers/username', 'pingxx-account/components/EditUserModal'], function (_export, _context) {
-    "use strict";
+    /**
+     * The `UsersSearchSource` finds and displays user search results in the search
+     * dropdown.
+     *
+     * @implements SearchSource
+     */
+    'use strict';
 
     var highlight, avatar, username, EditUserModal, UsersSearchResults;
     return {
         setters: [function (_flarumHelpersHighlight) {
-            highlight = _flarumHelpersHighlight.default;
+            highlight = _flarumHelpersHighlight['default'];
         }, function (_flarumHelpersAvatar) {
-            avatar = _flarumHelpersAvatar.default;
+            avatar = _flarumHelpersAvatar['default'];
         }, function (_flarumHelpersUsername) {
-            username = _flarumHelpersUsername.default;
+            username = _flarumHelpersUsername['default'];
         }, function (_pingxxAccountComponentsEditUserModal) {
-            EditUserModal = _pingxxAccountComponentsEditUserModal.default;
+            EditUserModal = _pingxxAccountComponentsEditUserModal['default'];
         }],
         execute: function () {
-            UsersSearchResults = function () {
+            UsersSearchResults = (function () {
                 function UsersSearchResults() {
                     babelHelpers.classCallCheck(this, UsersSearchResults);
                 }
@@ -1444,7 +1526,7 @@ System.register('pingxx-account/components/UserSearchSource', ['flarum/helpers/h
                                 { className: 'UserSearchResult', 'data-index': 'users' + user.id() },
                                 m(
                                     'a',
-                                    { onclick: function onclick() {
+                                    { onclick: function () {
                                             return app.modal.show(new EditUserModal({ user: user }));
                                         } },
                                     avatar(user),
@@ -1455,45 +1537,46 @@ System.register('pingxx-account/components/UserSearchSource', ['flarum/helpers/h
                     }
                 }]);
                 return UsersSearchResults;
-            }();
+            })();
 
             _export('default', UsersSearchResults);
         }
     };
 });;
-'use strict';
-
-System.register('pingxx-account/components/UsersPage', ['flarum/components/Page', 'flarum/components/Button', 'pingxx-account/components/CreateUserModal', 'pingxx-account/components/EditUserModal', 'pingxx-account/components/UserSearch', 'flarum/utils/humanTime', 'flarum/helpers/icon', 'flarum/helpers/listItems', 'flarum/utils/ItemList'], function (_export, _context) {
-    "use strict";
+System.register('pingxx-account/components/UsersPage', ['flarum/components/Page', 'flarum/components/Button', 'pingxx-account/components/CreateUserModal', 'pingxx-account/components/EditUserModal', 'pingxx-account/components/UserSearch', 'flarum/utils/humanTime', 'flarum/helpers/icon', 'flarum/helpers/listItems', 'flarum/utils/ItemList'], function (_export) {
+    /**
+     * Created by wyvern on 16/7/1.
+     */
+    'use strict';
 
     var Page, Button, CreateUserModal, EditUserModal, UserSearch, humanTime, icon, listItems, ItemList, UsersPage;
     return {
         setters: [function (_flarumComponentsPage) {
-            Page = _flarumComponentsPage.default;
+            Page = _flarumComponentsPage['default'];
         }, function (_flarumComponentsButton) {
-            Button = _flarumComponentsButton.default;
+            Button = _flarumComponentsButton['default'];
         }, function (_pingxxAccountComponentsCreateUserModal) {
-            CreateUserModal = _pingxxAccountComponentsCreateUserModal.default;
+            CreateUserModal = _pingxxAccountComponentsCreateUserModal['default'];
         }, function (_pingxxAccountComponentsEditUserModal) {
-            EditUserModal = _pingxxAccountComponentsEditUserModal.default;
+            EditUserModal = _pingxxAccountComponentsEditUserModal['default'];
         }, function (_pingxxAccountComponentsUserSearch) {
-            UserSearch = _pingxxAccountComponentsUserSearch.default;
+            UserSearch = _pingxxAccountComponentsUserSearch['default'];
         }, function (_flarumUtilsHumanTime) {
-            humanTime = _flarumUtilsHumanTime.default;
+            humanTime = _flarumUtilsHumanTime['default'];
         }, function (_flarumHelpersIcon) {
-            icon = _flarumHelpersIcon.default;
+            icon = _flarumHelpersIcon['default'];
         }, function (_flarumHelpersListItems) {
-            listItems = _flarumHelpersListItems.default;
+            listItems = _flarumHelpersListItems['default'];
         }, function (_flarumUtilsItemList) {
-            ItemList = _flarumUtilsItemList.default;
+            ItemList = _flarumUtilsItemList['default'];
         }],
         execute: function () {
-            UsersPage = function (_Page) {
+            UsersPage = (function (_Page) {
                 babelHelpers.inherits(UsersPage, _Page);
 
                 function UsersPage() {
                     babelHelpers.classCallCheck(this, UsersPage);
-                    return babelHelpers.possibleConstructorReturn(this, Object.getPrototypeOf(UsersPage).apply(this, arguments));
+                    babelHelpers.get(Object.getPrototypeOf(UsersPage.prototype), 'constructor', this).apply(this, arguments);
                 }
 
                 babelHelpers.createClass(UsersPage, [{
@@ -1516,13 +1599,13 @@ System.register('pingxx-account/components/UsersPage', ['flarum/components/Page'
                 }, {
                     key: 'refresh',
                     value: function refresh() {
-                        var _this2 = this;
+                        var _this = this;
 
                         return this.loadResults().then(function (results) {
-                            _this2.listusers = [];
-                            _this2.parseUsers(results);
+                            _this.listusers = [];
+                            _this.parseUsers(results);
                         }, function () {
-                            _this2.loading = false;
+                            _this.loading = false;
                             m.redraw();
                         });
                     }
@@ -1554,10 +1637,25 @@ System.register('pingxx-account/components/UsersPage', ['flarum/components/Page'
                 }, {
                     key: 'loadNext',
                     value: function loadNext() {
-                        var _this3 = this;
+                        var _this2 = this;
 
                         this.loading = true;
                         this.page = this.page + 1;
+                        this.loadResults().then(function (results) {
+                            _this2.listusers = [];
+                            _this2.parseUsers(results);
+                        }, function () {
+                            _this2.loading = false;
+                            m.redraw();
+                        });
+                    }
+                }, {
+                    key: 'loadPrev',
+                    value: function loadPrev() {
+                        var _this3 = this;
+
+                        this.loading = true;
+                        this.page = this.page - 1;
                         this.loadResults().then(function (results) {
                             _this3.listusers = [];
                             _this3.parseUsers(results);
@@ -1567,24 +1665,9 @@ System.register('pingxx-account/components/UsersPage', ['flarum/components/Page'
                         });
                     }
                 }, {
-                    key: 'loadPrev',
-                    value: function loadPrev() {
-                        var _this4 = this;
-
-                        this.loading = true;
-                        this.page = this.page - 1;
-                        this.loadResults().then(function (results) {
-                            _this4.listusers = [];
-                            _this4.parseUsers(results);
-                        }, function () {
-                            _this4.loading = false;
-                            m.redraw();
-                        });
-                    }
-                }, {
                     key: 'view',
                     value: function view() {
-                        var _this5 = this;
+                        var _this4 = this;
 
                         return m(
                             'div',
@@ -1687,7 +1770,7 @@ System.register('pingxx-account/components/UsersPage', ['flarum/components/Page'
                                                     ),
                                                     m(
                                                         'td',
-                                                        { id: 'activeted', onclick: _this5.ActiveUser.bind(_this5, user) },
+                                                        { id: 'activeted', onclick: _this4.ActiveUser.bind(_this4, user) },
                                                         !user.isActivated() ? m(
                                                             'a',
                                                             { type: 'button' },
@@ -1713,7 +1796,7 @@ System.register('pingxx-account/components/UsersPage', ['flarum/components/Page'
                                                         null,
                                                         m(
                                                             'a',
-                                                            { type: 'button', onclick: function onclick() {
+                                                            { type: 'button', onclick: function () {
                                                                     return app.modal.show(new EditUserModal({ user: user }));
                                                                 } },
                                                             m('i', { 'class': 'fa fa-pencil-square-o', 'aria-hidden': 'true' })
@@ -1734,8 +1817,8 @@ System.register('pingxx-account/components/UsersPage', ['flarum/components/Page'
                                                 null,
                                                 m(
                                                     'a',
-                                                    { onclick: function onclick() {
-                                                            _this5.loadPrev();
+                                                    { onclick: function () {
+                                                            _this4.loadPrev();
                                                         } },
                                                     '上一页'
                                                 )
@@ -1753,8 +1836,8 @@ System.register('pingxx-account/components/UsersPage', ['flarum/components/Page'
                                                 null,
                                                 m(
                                                     'a',
-                                                    { onclick: function onclick() {
-                                                            _this5.loadNext();
+                                                    { onclick: function () {
+                                                            _this4.loadNext();
                                                         } },
                                                     '下一页'
                                                 )
@@ -1801,31 +1884,31 @@ System.register('pingxx-account/components/UsersPage', ['flarum/components/Page'
                 }, {
                     key: 'config',
                     value: function config(isInitialized) {
-                        var _this6 = this;
+                        var _this5 = this;
 
                         if (isInitialized) return;
                         this.search.$('.Search-input input').on('keydown', function (e) {
                             switch (e.which) {
                                 case 40:case 38:
                                     // Down/Up
-                                    _this6.search.setIndex(_this6.search.getCurrentNumericIndex() + (e.which === 40 ? 1 : -1), true);
+                                    _this5.search.setIndex(_this5.search.getCurrentNumericIndex() + (e.which === 40 ? 1 : -1), true);
                                     e.preventDefault();
                                     break;
                                 case 13:
                                     // Return
                                     e.preventDefault();
-                                    if (_this6.search.value()) {
-                                        _this6.page = 1;
-                                        _this6.query = _this6.search.value();
-                                        _this6.refresh();
+                                    if (_this5.search.value()) {
+                                        _this5.page = 1;
+                                        _this5.query = _this5.search.value();
+                                        _this5.refresh();
                                     } else {
-                                        _this6.search.clear();
+                                        _this5.search.clear();
                                     }
-                                    _this6.search.$('input').blur();
+                                    _this5.search.$('input').blur();
                                     break;
                                 case 27:
                                     // Escape
-                                    _this6.search.clear();
+                                    _this5.search.clear();
                                     break;
                                 default:
                                 // no default
@@ -1834,33 +1917,31 @@ System.register('pingxx-account/components/UsersPage', ['flarum/components/Page'
                     }
                 }]);
                 return UsersPage;
-            }(Page);
+            })(Page);
 
             _export('default', UsersPage);
         }
     };
 });;
-'use strict';
-
-System.register('pingxx-account/main', ['flarum/extend', 'flarum/app', 'flarum/Model', 'pingxx-account/addUsersPane', 'pingxx-account/addTopsPane', 'pingxx-account/addTagTop', 'flarum/tags/models/Tag'], function (_export, _context) {
-    "use strict";
+System.register('pingxx-account/main', ['flarum/extend', 'flarum/app', 'flarum/Model', 'pingxx-account/addUsersPane', 'pingxx-account/addTopsPane', 'pingxx-account/addTagTop', 'flarum/tags/models/Tag'], function (_export) {
+    'use strict';
 
     var extend, app, Model, addUsersPane, addTopsPane, addTagTop, Tag;
     return {
         setters: [function (_flarumExtend) {
             extend = _flarumExtend.extend;
         }, function (_flarumApp) {
-            app = _flarumApp.default;
+            app = _flarumApp['default'];
         }, function (_flarumModel) {
-            Model = _flarumModel.default;
+            Model = _flarumModel['default'];
         }, function (_pingxxAccountAddUsersPane) {
-            addUsersPane = _pingxxAccountAddUsersPane.default;
+            addUsersPane = _pingxxAccountAddUsersPane['default'];
         }, function (_pingxxAccountAddTopsPane) {
-            addTopsPane = _pingxxAccountAddTopsPane.default;
+            addTopsPane = _pingxxAccountAddTopsPane['default'];
         }, function (_pingxxAccountAddTagTop) {
-            addTagTop = _pingxxAccountAddTagTop.default;
+            addTagTop = _pingxxAccountAddTagTop['default'];
         }, function (_flarumTagsModelsTag) {
-            Tag = _flarumTagsModelsTag.default;
+            Tag = _flarumTagsModelsTag['default'];
         }],
         execute: function () {
 

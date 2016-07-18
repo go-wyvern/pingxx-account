@@ -13,8 +13,6 @@ return [
     'up' => function (Builder $schema) {
         $schema->table('users', function (Blueprint $table) {
             $table->string('create_from');
-            $table->integer('ask_count')->unsigned()->default(0);
-            $table->integer('answer_count')->unsigned()->default(0);
         });
 
         // Store slugs for existing discussions
@@ -30,8 +28,6 @@ return [
     'down' => function (Builder $schema) {
         $schema->table('users', function (Blueprint $table) {
             $table->dropColumn('create_from');
-            $table->dropColumn('ask_count');
-            $table->dropColumn('answer_count');
         });
     }
 ];
