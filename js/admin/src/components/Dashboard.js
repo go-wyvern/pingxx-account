@@ -26,7 +26,6 @@ export default class Dashboard extends Page {
 
         this.refreshUser();
         this.refreshDiscussion();
-        this.refreshQuestion();
     }
 
 
@@ -56,19 +55,6 @@ export default class Dashboard extends Page {
         );
     }
 
-    refreshQuestion() {
-        return this.loadQuestions().then(
-            results => {
-                this.flarum.questions = [];
-                this.parseQuestions(results);
-            },
-            () => {
-                this.loading = false;
-                m.redraw();
-            }
-        );
-    }
-
     loadUsers() {
         return app.store.find('users');
     }
@@ -76,12 +62,6 @@ export default class Dashboard extends Page {
     loadDiscussions() {
         return app.store.find('discussions', {
             filter: {'is_article': 1}
-        });
-    }
-
-    loadQuestions() {
-        return app.store.find('discussions', {
-            filter: {'is_article': 0}
         });
     }
 
@@ -104,43 +84,35 @@ export default class Dashboard extends Page {
     }
 
     parseDiscussions(results) {
-        [].push.apply(this.flarum.discussions, results);
-        this.flarum.totalDiscussions = results.length;
-        this.loading = false;
         var minute = 1000 * 60;
         var hour = minute * 60;
         var day = hour * 24;
         var month = day * 10;
         results.map(discussion => {
-            if ((new Date().getTime() - discussion.startTime()) / month < 1) {
-                this.flarum.totay_discussions.push(discussion);
+            console.log(discussion.is_article);
+            if (discussion.is_article){
+                this.flarum.discussions.push(discussion);
+                if ((new Date().getTime() - discussion.startTime()) / month < 1) {
+                    this.flarum.totay_discussions.push(discussion);
+                }
+            }else{
+                this.flarum.questions.push(discussion);
+                if ((new Date().getTime() - discussion.startTime()) / month < 1) {
+                    this.flarum.totay_questions.push(discussion);
+                }
             }
         });
+        this.flarum.totalDiscussions = this.flarum.discussions.length;
         this.flarum.totaytotalDiscussions = this.flarum.totay_discussions.length;
 
-        m.lazyRedraw();
-        return results;
-    }
-
-    parseQuestions(results) {
-        [].push.apply(this.flarum.questions, results);
-        this.flarum.totalQuestions = results.length;
-        this.loading = false;
-        var minute = 1000 * 60;
-        var hour = minute * 60;
-        var day = hour * 24;
-        var month = day * 10;
-        results.map(question => {
-            if ((new Date().getTime() - question.startTime()) / month < 1) {
-                this.flarum.totay_questions.push(question);
-            }
-        });
+        this.flarum.totalQuestions = this.flarum.questions.length;
         this.flarum.totaytotalQuestions = this.flarum.totay_questions.length;
 
+        this.loading = false;
+
         m.lazyRedraw();
         return results;
     }
-
 
     view() {
         this.topIndex = 0;

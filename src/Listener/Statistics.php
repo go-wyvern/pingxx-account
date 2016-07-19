@@ -21,8 +21,8 @@ use Flarum\Event\PostWasPosted;
 use Flarum\Event\PostWasRestored;
 use Flarum\Likes\Event\PostWasLiked;
 use Flarum\Likes\Event\PostWasUnliked;
-use Flarum\Tags\best\Event\DiscussionWasBest;
-use Flarum\Tags\best\Event\DiscussionWasUnbest;
+use Flarum\Tags\best\Event\PostWasBest;
+use Flarum\Tags\best\Event\PostWasUnbest;
 
 
 class Statistics
@@ -40,16 +40,16 @@ class Statistics
         $events->listen(DiscussionWasDeleted::class, [$this, 'whenDiscussionWasDeleted']);
         $events->listen(PostWasLiked::class, [$this, 'whenPostWasLiked']);
         $events->listen(PostWasUnLiked::class, [$this, 'whenPostWasUnLiked']);
-        $events->listen(DiscussionWasBest::class, [$this, 'whenDiscussionWasBest']);
-        $events->listen(DiscussionWasUnbest::class, [$this, 'whenDiscussionWasUnbest']);
+        $events->listen(PostWasBest::class, [$this, 'whenPostWasBest']);
+        $events->listen(PostWasUnbest::class, [$this, 'whenPostWasUnbest']);
     }
 
-    public function whenDiscussionWasBest(DiscussionWasBest $event)
+    public function whenPostWasBest(PostWasBest $event)
     {
         $this->updateAgreeCount($event->user, 1);
     }
 
-    public function whenDiscussionWasUnbest(DiscussionWasBest $event)
+    public function whenPostWasUnbest(PostWasUnbest $event)
     {
         $this->updateAgreeCount($event->user, -1);
     }
@@ -60,7 +60,7 @@ class Statistics
 
     }
 
-    public function whenPostWasUnLiked(PostWasLiked $event)
+    public function whenPostWasUnLiked(PostWasUnLiked $event)
     {
         $this->updatePraiseCount($event->user, -1);
     }

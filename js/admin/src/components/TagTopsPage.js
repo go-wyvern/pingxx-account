@@ -24,6 +24,7 @@ export default class TagTopsPage extends Page {
                                     <th></th>
                                     <th>标签名称</th>
                                     <th>文章总量</th>
+                                    <th>问题总量</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -36,6 +37,7 @@ export default class TagTopsPage extends Page {
                                                 <td className="ranking">{this.topIndex}</td>
                                                 <td>{tag.name()}</td>
                                                 <td>{tag.discussionsCount()}</td>
+                                                <td>{tag.questions_count()}</td>
                                             </tr>
                                         )}
                                     )

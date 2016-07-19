@@ -17,8 +17,10 @@ app.initializers.add('pingxx-account', () => {
     app.store.models.users.prototype.agree_count = Model.attribute('agree_count');
 
     app.store.models.discussions.prototype.agree_count = Model.attribute('is_article');
-
+    
     app.store.models.tags = Tag;
+    app.store.models.tags.prototype.is_article = Model.attribute('is_article');
+    app.store.models.tags.prototype.questions_count = Model.attribute('questions_count');
 
     addUsersPane();
     addTopsPane();
