@@ -79,7 +79,7 @@ class PingxxTokenController implements ControllerInterface
             }
             return $response;
         } else {
-            throw new PermissionDeniedException;
+            throw new PermissionDeniedException($result->data->message);;
         }
     }
 }

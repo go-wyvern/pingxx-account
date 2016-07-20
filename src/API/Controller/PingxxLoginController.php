@@ -12,6 +12,7 @@ namespace Pingxx\Account\Api\Controller;
 
 use Flarum\Api\Client;
 use Flarum\Api\Controller\TokenController;
+use Flarum\Core\Exception\PermissionDeniedException;
 use Flarum\Core\Repository\UserRepository;
 use Flarum\Event\UserLoggedIn;
 use Flarum\Http\AccessToken;
@@ -90,10 +91,10 @@ class PingxxLoginController implements ControllerInterface
 
             $response = $this->rememberer->remember($response, $token);
         } elseif ($response->getStatusCode() === 401) {
-            $response = $this->apiClient->send(PingxxTokenController::class, $actor, [], $params);
+            $responseNew = $this->apiClient->send(PingxxTokenController::class, $actor, [], $params);
 
-            if ($response->getStatusCode() === 200) {
-                $data = json_decode($response->getBody());
+            if ($responseNew->getStatusCode() === 200) {
+                $data = json_decode($responseNew->getBody());
 
                 $session = $request->getAttribute('session');
                 $this->authenticator->logIn($session, $data->userId);
@@ -102,15 +103,18 @@ class PingxxLoginController implements ControllerInterface
 
                 event(new UserLoggedIn($this->users->findOrFail($data->userId), $token));
 
-                $response = FigResponseCookies::set(
-                    $response,
+                $responseNew = FigResponseCookies::set(
+                    $responseNew,
                     SetCookie::create("lastLoginName")
                         ->withValue($request->getParsedBody()['identification'])
                         ->withPath('/')
                         ->withDomain('dashboard.pingxx.com')
                 );
 
-                $response = $this->rememberer->remember($response, $token);
+                $responseNew = $this->rememberer->remember($responseNew, $token);
+                return $responseNew;
+            } else{
+                return $response;
             }
 
         }
