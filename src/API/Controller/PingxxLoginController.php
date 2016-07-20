@@ -24,7 +24,7 @@ use Zend\Diactoros\Response\JsonResponse;
 use Dflydev\FigCookies\SetCookie;
 use Dflydev\FigCookies\FigResponseCookies;
 
-class PingxxLogInController implements ControllerInterface
+class PingxxLoginController implements ControllerInterface
 {
     /**
      * @var \Flarum\Core\Repository\UserRepository

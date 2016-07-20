@@ -27,6 +27,6 @@ class PingxxLogin
     public function addPingxxLoginRoutes(ConfigureApiRoutes $event)
     {
         $event->post('/pingxx/token', 'pingxx.token', Controller\PingxxTokenController::class);
-        $event->post('/pingxx/login', 'pingxx.login', Controller\PingxxLogInController::class);
+        $event->post('/pingxx/login', 'pingxx.login', Controller\PingxxLoginController::class);
     }
 }
