@@ -45,6 +45,9 @@ export default class TopsPage extends Page {
         map.discussActive = '-discussionsCount';
         map.askActive = '-askCount';
         map.answerActive = '-answerCount';
+        map.praise_count = '-praise_count';
+        map.agree_count = '-agree_count';
+        map.same_question_count = '-same_question_count';
         map.newest = '-joinTime';
         map.oldest = 'joinTime';
 
@@ -80,7 +83,8 @@ export default class TopsPage extends Page {
                             <li role="presentation"><a>文章发表总量</a></li>
                             <li role="presentation"><a>文章评论总量</a></li>
                             <li role="presentation"><a>被点赞总量</a></li>
-                            <li role="presentation"><a>被赞同总量</a></li>
+                            <li role="presentation"><a>我也有这个问题</a></li>
+                            <li role="presentation"><a>被选为最佳答案总量</a></li>
                         </ul>
 
                         <div>
@@ -111,7 +115,8 @@ export default class TopsPage extends Page {
                                                         this.attr=='问题提问总量'? user.ask_count():
                                                         this.attr=='问题回答总量'? user.answer_count():
                                                         this.attr=='被点赞总量' ? user.praise_count():
-                                                        this.attr=='被赞同总量' ? user.agree_count():''
+                                                        this.attr=='我也有这个问题' ? user.agree_count():
+                                                        this.attr=='被选为最佳答案总量' ? user.same_question_count():''
                                                 }
 
                                             </td>
@@ -150,6 +155,12 @@ export default class TopsPage extends Page {
                 dashboard.sort='answerActive'
             }else if (dashboard.attr=='文章评论总量') {
                 dashboard.sort='commentsActive';
+            }else if (dashboard.attr=='被点赞总量') {
+                dashboard.sort='praise_count';
+            }else if (dashboard.attr=='我也有这个问题') {
+                dashboard.sort='same_question_count';
+            }else if (dashboard.attr=='被选为最佳答案总量') {
+                dashboard.sort='agree_count';
             }
             dashboard.refresh();
         })

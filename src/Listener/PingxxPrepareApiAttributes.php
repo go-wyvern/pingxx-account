@@ -37,6 +37,7 @@ class PingxxPrepareApiAttributes
             $event->attributes['answer_count'] = $event->model->answer_count;
             $event->attributes['praise_count'] = $event->model->praise_count;
             $event->attributes['agree_count'] = $event->model->agree_count;
+            $event->attributes['same_question_count'] = $event->model->same_question_count;
         }
 
         if ($event->serializer instanceof DiscussionSerializer) {

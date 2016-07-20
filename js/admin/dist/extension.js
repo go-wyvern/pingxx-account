@@ -937,6 +937,9 @@ System.register('pingxx-account/components/TopsPage', ['flarum/components/Page']
                         map.discussActive = '-discussionsCount';
                         map.askActive = '-askCount';
                         map.answerActive = '-answerCount';
+                        map.praise_count = '-praise_count';
+                        map.agree_count = '-agree_count';
+                        map.same_question_count = '-same_question_count';
                         map.newest = '-joinTime';
                         map.oldest = 'joinTime';
 
@@ -1035,7 +1038,16 @@ System.register('pingxx-account/components/TopsPage', ['flarum/components/Page']
                                             m(
                                                 'a',
                                                 null,
-                                                '被赞同总量'
+                                                '我也有这个问题'
+                                            )
+                                        ),
+                                        m(
+                                            'li',
+                                            { role: 'presentation' },
+                                            m(
+                                                'a',
+                                                null,
+                                                '被选为最佳答案总量'
                                             )
                                         )
                                     ),
@@ -1095,7 +1107,7 @@ System.register('pingxx-account/components/TopsPage', ['flarum/components/Page']
                                                         m(
                                                             'td',
                                                             null,
-                                                            _this3.attr == '文章发表总量' ? user.discussionsCount() : _this3.attr == '文章评论总量' ? user.commentsCount() : _this3.attr == '问题提问总量' ? user.ask_count() : _this3.attr == '问题回答总量' ? user.answer_count() : _this3.attr == '被点赞总量' ? user.praise_count() : _this3.attr == '被赞同总量' ? user.agree_count() : ''
+                                                            _this3.attr == '文章发表总量' ? user.discussionsCount() : _this3.attr == '文章评论总量' ? user.commentsCount() : _this3.attr == '问题提问总量' ? user.ask_count() : _this3.attr == '问题回答总量' ? user.answer_count() : _this3.attr == '被点赞总量' ? user.praise_count() : _this3.attr == '我也有这个问题' ? user.agree_count() : _this3.attr == '被选为最佳答案总量' ? user.same_question_count() : ''
                                                         )
                                                     );
                                                 })
@@ -1129,6 +1141,12 @@ System.register('pingxx-account/components/TopsPage', ['flarum/components/Page']
                                 dashboard.sort = 'answerActive';
                             } else if (dashboard.attr == '文章评论总量') {
                                 dashboard.sort = 'commentsActive';
+                            } else if (dashboard.attr == '被点赞总量') {
+                                dashboard.sort = 'praise_count';
+                            } else if (dashboard.attr == '我也有这个问题') {
+                                dashboard.sort = 'same_question_count';
+                            } else if (dashboard.attr == '被选为最佳答案总量') {
+                                dashboard.sort = 'agree_count';
                             }
                             dashboard.refresh();
                         });
@@ -1868,10 +1886,10 @@ System.register('pingxx-account/components/UsersPage', ['flarum/components/Page'
 });;
 'use strict';
 
-System.register('pingxx-account/main', ['flarum/extend', 'flarum/app', 'flarum/Model', 'pingxx-account/addUsersPane', 'pingxx-account/addTopsPane', 'pingxx-account/addTagTop', 'flarum/tags/models/Tag'], function (_export, _context) {
+System.register('pingxx-account/main', ['flarum/extend', 'flarum/app', 'flarum/Model', 'pingxx-account/addUsersPane', 'flarum/components/AdminNav', 'pingxx-account/addTopsPane', 'pingxx-account/addTagTop', 'flarum/tags/models/Tag'], function (_export, _context) {
     "use strict";
 
-    var extend, app, Model, addUsersPane, addTopsPane, addTagTop, Tag;
+    var extend, app, Model, addUsersPane, AdminNav, addTopsPane, addTagTop, Tag;
     return {
         setters: [function (_flarumExtend) {
             extend = _flarumExtend.extend;
@@ -1881,6 +1899,8 @@ System.register('pingxx-account/main', ['flarum/extend', 'flarum/app', 'flarum/M
             Model = _flarumModel.default;
         }, function (_pingxxAccountAddUsersPane) {
             addUsersPane = _pingxxAccountAddUsersPane.default;
+        }, function (_flarumComponentsAdminNav) {
+            AdminNav = _flarumComponentsAdminNav.default;
         }, function (_pingxxAccountAddTopsPane) {
             addTopsPane = _pingxxAccountAddTopsPane.default;
         }, function (_pingxxAccountAddTagTop) {
@@ -1897,12 +1917,17 @@ System.register('pingxx-account/main', ['flarum/extend', 'flarum/app', 'flarum/M
                 app.store.models.users.prototype.answer_count = Model.attribute('answer_count');
                 app.store.models.users.prototype.praise_count = Model.attribute('praise_count');
                 app.store.models.users.prototype.agree_count = Model.attribute('agree_count');
+                app.store.models.users.prototype.same_question_count = Model.attribute('same_question_count');
 
                 app.store.models.discussions.prototype.agree_count = Model.attribute('is_article');
 
                 app.store.models.tags = Tag;
                 app.store.models.tags.prototype.is_article = Model.attribute('is_article');
                 app.store.models.tags.prototype.questions_count = Model.attribute('questions_count');
+
+                // extend(AdminNav.prototype, 'items', items => {
+                //     items.remove('extensions');
+                // });
 
                 addUsersPane();
                 addTopsPane();

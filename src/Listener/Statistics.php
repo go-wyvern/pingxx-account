@@ -56,13 +56,21 @@ class Statistics
 
     public function whenPostWasLiked(PostWasLiked $event)
     {
-        $this->updatePraiseCount($event->user, 1);
+        if ($event->post->is_start) {
+            $this->updateSameQuestionCount($event->user, 1);
+        } else {
+            $this->updatePraiseCount($event->user, 1);
+        }
 
     }
 
     public function whenPostWasUnLiked(PostWasUnLiked $event)
     {
-        $this->updatePraiseCount($event->user, -1);
+        if ($event->post->is_start) {
+            $this->updateSameQuestionCount($event->user, -1);
+        } else {
+            $this->updatePraiseCount($event->user, -1);
+        }
     }
 
     /**
@@ -192,6 +200,14 @@ class Statistics
     {
         if ($user && $user->exists) {
             $user->praise_count += $amount;
+            $user->save();
+        }
+    }
+
+    protected function updateSameQuestionCount(User $user, $amount)
+    {
+        if ($user && $user->exists) {
+            $user->same_question_count += $amount;
             $user->save();
         }
     }
