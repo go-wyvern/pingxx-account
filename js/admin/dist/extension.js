@@ -899,7 +899,7 @@ System.register('pingxx-account/components/TopsPage', ['flarum/components/Page']
                         babelHelpers.get(Object.getPrototypeOf(TopsPage.prototype), 'init', this).call(this);
                         this.loading = true;
                         this.attr = "问题提问总量";
-                        this.sort = 'discussactive';
+                        this.sort = 'askActive';
                         this.topIndex = 0;
                         this.users = [];
 

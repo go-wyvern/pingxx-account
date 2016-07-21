@@ -8,7 +8,7 @@ export default class TopsPage extends Page {
         super.init();
         this.loading = true;
         this.attr = "问题提问总量";
-        this.sort = 'discussactive';
+        this.sort = 'askActive';
         this.topIndex = 0;
         this.users = [];
 
