@@ -37,14 +37,14 @@ System.register('pingxx-account/addTagTop', ['flarum/extend', 'flarum/components
 });;
 'use strict';
 
-System.register('pingxx-account/addTopsPane', ['flarum/extend', 'flarum/components/AdminNav', 'flarum/components/AdminLinkButton', 'pingxx-account/components/TopsPage', 'pingxx-account/components/Dashboard'], function (_export, _context) {
+System.register('pingxx-account/addTopsPane', ['flarum/extend', 'flarum/components/AdminNav', 'flarum/components/AdminLinkButton', 'pingxx-account/components/TopsPage', 'pingxx-account/components/Tops', 'pingxx-account/components/Dashboard'], function (_export, _context) {
     "use strict";
 
-    var extend, AdminNav, AdminLinkButton, TopsPage, Dashboard;
+    var extend, AdminNav, AdminLinkButton, TopsPage, Tops, Dashboard;
 
     _export('default', function () {
         app.routes.dashboard = { path: '/', component: Dashboard.component() };
-        app.routes.tops = { path: '/tops', component: TopsPage.component() };
+        app.routes.tops = { path: '/tops', component: Tops.component() };
 
         app.extensionSettings['pingxx-account'] = function () {
             return m.route(app.route('tops'));
@@ -69,6 +69,8 @@ System.register('pingxx-account/addTopsPane', ['flarum/extend', 'flarum/componen
             AdminLinkButton = _flarumComponentsAdminLinkButton.default;
         }, function (_pingxxAccountComponentsTopsPage) {
             TopsPage = _pingxxAccountComponentsTopsPage.default;
+        }, function (_pingxxAccountComponentsTops) {
+            Tops = _pingxxAccountComponentsTops.default;
         }, function (_pingxxAccountComponentsDashboard) {
             Dashboard = _pingxxAccountComponentsDashboard.default;
         }],
@@ -872,6 +874,310 @@ System.register("pingxx-account/components/TagTopsPage", ["flarum/components/Pag
             }(Page);
 
             _export("default", TagTopsPage);
+        }
+    };
+});;
+'use strict';
+
+System.register('pingxx-account/components/Tops', ['flarum/components/Page', 'pingxx-account/components/TopsItems'], function (_export, _context) {
+    "use strict";
+
+    var Page, TopsItems, Tops;
+    return {
+        setters: [function (_flarumComponentsPage) {
+            Page = _flarumComponentsPage.default;
+        }, function (_pingxxAccountComponentsTopsItems) {
+            TopsItems = _pingxxAccountComponentsTopsItems.default;
+        }],
+        execute: function () {
+            Tops = function (_Page) {
+                babelHelpers.inherits(Tops, _Page);
+
+                function Tops() {
+                    babelHelpers.classCallCheck(this, Tops);
+                    return babelHelpers.possibleConstructorReturn(this, Object.getPrototypeOf(Tops).apply(this, arguments));
+                }
+
+                babelHelpers.createClass(Tops, [{
+                    key: 'init',
+                    value: function init() {
+                        babelHelpers.get(Object.getPrototypeOf(Tops.prototype), 'init', this).call(this);
+
+                        this.topobj = [{
+                            id: 1,
+                            topName: "问题提问总量排行",
+                            sortName: 'askActive',
+                            is_pingxx: false
+                        }, {
+                            id: 2,
+                            topName: "问题回答总量排行",
+                            sortName: 'answerActive',
+                            is_pingxx: false
+                        }, {
+                            id: 3,
+                            topName: "文章发表总量排行",
+                            sortName: 'discussActive',
+                            is_pingxx: false
+                        }, {
+                            id: 4,
+                            topName: "文章评论总量排行",
+                            sortName: 'commentsActive',
+                            is_pingxx: false
+                        }, {
+                            id: 5,
+                            topName: "被点赞总量排行",
+                            sortName: 'praise_count',
+                            is_pingxx: false
+                        }, {
+                            id: 6,
+                            topName: "我也有这个问题",
+                            sortName: 'same_question_count',
+                            is_pingxx: false
+                        }, {
+                            id: 7,
+                            topName: "被选为最佳答案总量排行",
+                            sortName: 'agree_count',
+                            is_pingxx: false
+                        }];
+                    }
+                }, {
+                    key: 'view',
+                    value: function view() {
+                        return m(
+                            'div',
+                            { className: 'Dashboard' },
+                            m(
+                                'div',
+                                { className: 'Dashboard-options' },
+                                m(
+                                    'div',
+                                    { className: 'container' },
+                                    m(
+                                        'p',
+                                        null,
+                                        app.translator.trans('pingxx-account.admin.tops.tops_text')
+                                    )
+                                )
+                            ),
+                            m(
+                                'div',
+                                { className: 'UserPage-users' },
+                                m(
+                                    'div',
+                                    { className: 'container' },
+                                    this.topobj.map(function (top) {
+                                        return m(
+                                            'div',
+                                            null,
+                                            TopsItems.component({ top: top })
+                                        );
+                                    })
+                                )
+                            )
+                        );
+                    }
+                }, {
+                    key: 'config',
+                    value: function config(isInitialized) {
+                        if (isInitialized) return;
+
+                        var tops = this;
+
+                        // this.$(".top .ignore-pingxx input").change(function (e) {
+                        //     if ($(this).prop('checked')) {
+                        //         tops.topobj[$(this).attr("item_id") - 1].is_pingxx =  true;
+                        //         console.log(tops.topobj[$(this).attr("item_id") - 1].is_pingxx);
+                        //         m.lazyRedraw();
+                        //     } else {
+                        //         tops.topobj[$(this).attr("item_id") - 1].is_pingxx =  false;
+                        //     }
+                        // })
+                    }
+                }]);
+                return Tops;
+            }(Page);
+
+            _export('default', Tops);
+        }
+    };
+});;
+'use strict';
+
+System.register('pingxx-account/components/TopsItems', ['flarum/Component', 'flarum/components/Page'], function (_export, _context) {
+    "use strict";
+
+    var Component, Page, TopsItems;
+    return {
+        setters: [function (_flarumComponent) {
+            Component = _flarumComponent.default;
+        }, function (_flarumComponentsPage) {
+            Page = _flarumComponentsPage.default;
+        }],
+        execute: function () {
+            TopsItems = function (_Page) {
+                babelHelpers.inherits(TopsItems, _Page);
+
+                function TopsItems() {
+                    babelHelpers.classCallCheck(this, TopsItems);
+                    return babelHelpers.possibleConstructorReturn(this, Object.getPrototypeOf(TopsItems).apply(this, arguments));
+                }
+
+                babelHelpers.createClass(TopsItems, [{
+                    key: 'init',
+                    value: function init() {
+                        babelHelpers.get(Object.getPrototypeOf(TopsItems.prototype), 'init', this).call(this);
+                        this.top = this.props.top;
+                        this.sort = this.props.top.sortName;
+                        console.log(this.props.top.sortName);
+                        this.is_pingxx = this.props.top.is_pingxx;
+                        this.users = [];
+                        this.topIndex = 0;
+                        console.log(this.props.top);
+
+                        this.refresh();
+                    }
+                }, {
+                    key: 'refresh',
+                    value: function refresh() {
+                        var _this2 = this;
+
+                        return this.loadResults().then(function (results) {
+                            _this2.users = [];
+                            _this2.topIndex = 0;
+                            _this2.parseTopUsers(results);
+                        }, function () {
+                            _this2.loading = false;
+                            m.redraw();
+                        });
+                    }
+                }, {
+                    key: 'loadResults',
+                    value: function loadResults() {
+                        return app.store.find('users', {
+                            sort: this.sortMap()[this.sort],
+                            filter: { is_pingxx: this.top.is_pingxx },
+                            page: {
+                                limit: 20
+                            }
+                        });
+                    }
+                }, {
+                    key: 'sortMap',
+                    value: function sortMap() {
+                        var map = {};
+                        map.commentsActive = '-commentsCount';
+                        map.discussActive = '-discussionsCount';
+                        map.askActive = '-askCount';
+                        map.answerActive = '-answerCount';
+                        map.praise_count = '-praise_count';
+                        map.agree_count = '-agree_count';
+                        map.same_question_count = '-same_question_count';
+                        map.newest = '-joinTime';
+                        map.oldest = 'joinTime';
+
+                        return map;
+                    }
+                }, {
+                    key: 'parseTopUsers',
+                    value: function parseTopUsers(results) {
+                        [].push.apply(this.users, results);
+
+                        this.loading = false;
+
+                        m.lazyRedraw();
+
+                        return results;
+                    }
+                }, {
+                    key: 'view',
+                    value: function view() {
+                        var _this3 = this;
+
+                        return m(
+                            'div',
+                            { className: 'top' },
+                            m(
+                                'div',
+                                { className: 'top-header' },
+                                this.top.topName,
+                                m(
+                                    'span',
+                                    { className: 'ignore-pingxx' },
+                                    m(
+                                        'label',
+                                        null,
+                                        m('input', { name: 'is_pingxx', item_id: this.top.id, type: 'checkbox', value: '' }),
+                                        '  忽略Ping++用户 '
+                                    )
+                                )
+                            ),
+                            m(
+                                'div',
+                                { className: 'top-body' },
+                                m(
+                                    'table',
+                                    { className: 'UserGrid UserGridWidth' },
+                                    m(
+                                        'tbody',
+                                        null,
+                                        this.users.map(function (user, index) {
+                                            return m(
+                                                'tr',
+                                                null,
+                                                m(
+                                                    'td',
+                                                    { className: 'ranking' },
+                                                    index + 1
+                                                ),
+                                                m(
+                                                    'td',
+                                                    null,
+                                                    user.username()
+                                                ),
+                                                m(
+                                                    'td',
+                                                    null,
+                                                    user.email()
+                                                ),
+                                                m(
+                                                    'td',
+                                                    null,
+                                                    _this3.sort == 'discussActive' ? user.discussionsCount() : _this3.sort == 'commentsActive' ? user.commentsCount() : _this3.sort == 'askActive' ? user.ask_count() : _this3.sort == 'answerActive' ? user.answer_count() : _this3.sort == 'praise_count' ? user.praise_count() : _this3.sort == 'agree_count' ? user.agree_count() : _this3.sort == 'same_question_count' ? user.same_question_count() : ''
+                                                )
+                                            );
+                                        })
+                                    )
+                                )
+                            )
+                        );
+                    }
+                }, {
+                    key: 'config',
+                    value: function config(isInitialized) {
+                        if (isInitialized) return;
+                        var mytop = this;
+                        $(".top .ignore-pingxx input").change(function (e) {
+                            if ($(this).prop('checked')) {
+                                if (mytop.top.id == $(this).attr('item_id')) {
+                                    mytop.top.is_pingxx = true;
+                                    console.log(mytop.sort);
+                                    console.log(mytop.top);
+                                    mytop.refresh();
+                                }
+                            } else {
+                                if (mytop.top.id == $(this).attr('item_id')) {
+                                    mytop.top.is_pingxx = false;
+                                    console.log(mytop.top);
+                                    mytop.refresh();
+                                }
+                            }
+                        });
+                    }
+                }]);
+                return TopsItems;
+            }(Page);
+
+            _export('default', TopsItems);
         }
     };
 });;
@@ -1717,7 +2023,7 @@ System.register('pingxx-account/components/UsersPage', ['flarum/components/Page'
                                                         m(
                                                             'span',
                                                             { className: user.isOnline() ? 'online' : '' },
-                                                            user.isOnline() ? [icon('circle'), ' ', '在线'] : [icon('clock-o'), ' ', humanTime(user.lastSeenTime())]
+                                                            user.isOnline() ? [icon('circle'), ' ', '在线'] : [icon('clock-o'), ' ', '不在线']
                                                         )
                                                     ),
                                                     m(

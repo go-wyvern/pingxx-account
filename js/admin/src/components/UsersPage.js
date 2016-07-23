@@ -134,7 +134,7 @@ export default class UsersPage extends Page {
                                     <span className={(user.isOnline() ? 'online' : '')}>
                                 {user.isOnline()
                                     ? [icon('circle'), ' ', '在线']
-                                    : [icon('clock-o'), ' ', humanTime(user.lastSeenTime())]}
+                                    : [icon('clock-o'), ' ', '不在线']}
                                 </span>
                                     </td>
                                     <td>
