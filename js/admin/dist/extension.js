@@ -363,9 +363,7 @@ System.register('pingxx-account/components/Dashboard', ['flarum/components/Page'
                 }, {
                     key: 'loadDiscussions',
                     value: function loadDiscussions() {
-                        return app.store.find('discussions', {
-                            filter: { 'is_article': 1 }
-                        });
+                        return app.store.find('discussions');
                     }
                 }, {
                     key: 'parseUsers',
@@ -377,8 +375,9 @@ System.register('pingxx-account/components/Dashboard', ['flarum/components/Page'
                         var minute = 1000 * 60;
                         var hour = minute * 60;
                         var day = hour * 24;
+                        var nowhour = new Date().getHours();
                         results.map(function (user) {
-                            if ((new Date().getTime() - user.joinTime()) / day < 1) {
+                            if ((new Date().getTime() - user.joinTime()) / (nowhour * minute * 60) < 1) {
                                 _this4.flarum.totay_users.push(user);
                             }
                         });
@@ -397,16 +396,18 @@ System.register('pingxx-account/components/Dashboard', ['flarum/components/Page'
                         var hour = minute * 60;
                         var day = hour * 24;
                         var month = day * 10;
+
+                        var nowhour = new Date().getHours();
                         results.map(function (discussion) {
-                            console.log(discussion.is_article);
+                            console.log(discussion);
                             if (discussion.is_article) {
                                 _this5.flarum.discussions.push(discussion);
-                                if ((new Date().getTime() - discussion.startTime()) / month < 1) {
+                                if ((new Date().getTime() - discussion.startTime()) / (nowhour * minute * 60) < 1) {
                                     _this5.flarum.totay_discussions.push(discussion);
                                 }
                             } else {
                                 _this5.flarum.questions.push(discussion);
-                                if ((new Date().getTime() - discussion.startTime()) / month < 1) {
+                                if ((new Date().getTime() - discussion.startTime()) / (nowhour * minute * 60) < 1) {
                                     _this5.flarum.totay_questions.push(discussion);
                                 }
                             }

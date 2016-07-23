@@ -60,9 +60,7 @@ export default class Dashboard extends Page {
     }
 
     loadDiscussions() {
-        return app.store.find('discussions', {
-            filter: {'is_article': 1}
-        });
+        return app.store.find('discussions');
     }
 
     parseUsers(results) {
@@ -71,8 +69,9 @@ export default class Dashboard extends Page {
         var minute = 1000 * 60;
         var hour = minute * 60;
         var day = hour * 24;
+        var nowhour = new Date().getHours();
         results.map(user => {
-            if ((new Date().getTime() - user.joinTime()) / day < 1) {
+            if ((new Date().getTime() - user.joinTime()) / (nowhour * minute * 60) < 1) {
                 this.flarum.totay_users.push(user);
             }
         });
@@ -88,16 +87,18 @@ export default class Dashboard extends Page {
         var hour = minute * 60;
         var day = hour * 24;
         var month = day * 10;
+
+        var nowhour = new Date().getHours();
         results.map(discussion => {
-            console.log(discussion.is_article);
-            if (discussion.is_article){
+            console.log(discussion);
+            if (discussion.is_article) {
                 this.flarum.discussions.push(discussion);
-                if ((new Date().getTime() - discussion.startTime()) / month < 1) {
+                if ((new Date().getTime() - discussion.startTime()) / (nowhour * minute * 60) < 1) {
                     this.flarum.totay_discussions.push(discussion);
                 }
-            }else{
+            } else {
                 this.flarum.questions.push(discussion);
-                if ((new Date().getTime() - discussion.startTime()) / month < 1) {
+                if ((new Date().getTime() - discussion.startTime()) / (nowhour * minute * 60) < 1) {
                     this.flarum.totay_questions.push(discussion);
                 }
             }
