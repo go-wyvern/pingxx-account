@@ -1,5 +1,42 @@
 'use strict';
 
+System.register('pingxx-account/addPostTop', ['flarum/extend', 'flarum/components/AdminNav', 'flarum/components/AdminLinkButton', 'pingxx-account/components/PostTops'], function (_export, _context) {
+    "use strict";
+
+    var extend, AdminNav, AdminLinkButton, PostTops;
+
+    _export('default', function () {
+        app.routes.post_tops = { path: '/post_tops', component: PostTops.component() };
+
+        app.extensionSettings['pingxx-account'] = function () {
+            return m.route(app.route('post_tops'));
+        };
+
+        extend(AdminNav.prototype, 'items', function (items) {
+            items.add('post_tops', AdminLinkButton.component({
+                href: app.route('post_tops'),
+                icon: 'list-ol',
+                children: app.translator.trans('pingxx-account.admin.nav.post_tops_button'),
+                description: app.translator.trans('pingxx-account.admin.nav.post_tops_text')
+            }));
+        });
+    });
+
+    return {
+        setters: [function (_flarumExtend) {
+            extend = _flarumExtend.extend;
+        }, function (_flarumComponentsAdminNav) {
+            AdminNav = _flarumComponentsAdminNav.default;
+        }, function (_flarumComponentsAdminLinkButton) {
+            AdminLinkButton = _flarumComponentsAdminLinkButton.default;
+        }, function (_pingxxAccountComponentsPostTops) {
+            PostTops = _pingxxAccountComponentsPostTops.default;
+        }],
+        execute: function () {}
+    };
+});;
+'use strict';
+
 System.register('pingxx-account/addTagTop', ['flarum/extend', 'flarum/components/AdminNav', 'flarum/components/AdminLinkButton', 'pingxx-account/components/TagTopsPage'], function (_export, _context) {
     "use strict";
 
@@ -401,8 +438,8 @@ System.register('pingxx-account/components/Dashboard', ['flarum/components/Page'
 
                         var nowhour = new Date().getHours();
                         results.map(function (discussion) {
-                            console.log(discussion);
-                            if (discussion.is_article) {
+                            console.log(discussion.is_article());
+                            if (discussion.is_article()) {
                                 _this5.flarum.discussions.push(discussion);
                                 if ((new Date().getTime() - discussion.startTime()) / (nowhour * minute * 60) < 1) {
                                     _this5.flarum.totay_discussions.push(discussion);
@@ -723,6 +760,269 @@ System.register('pingxx-account/components/EditUserModal', ['flarum/components/M
             }(Modal);
 
             _export('default', EditUserModal);
+        }
+    };
+});;
+'use strict';
+
+System.register('pingxx-account/components/PostTops', ['flarum/components/Page', 'pingxx-account/components/TopsItems'], function (_export, _context) {
+    "use strict";
+
+    var Page, TopsItems, PostTops;
+    return {
+        setters: [function (_flarumComponentsPage) {
+            Page = _flarumComponentsPage.default;
+        }, function (_pingxxAccountComponentsTopsItems) {
+            TopsItems = _pingxxAccountComponentsTopsItems.default;
+        }],
+        execute: function () {
+            PostTops = function (_Page) {
+                babelHelpers.inherits(PostTops, _Page);
+
+                function PostTops() {
+                    babelHelpers.classCallCheck(this, PostTops);
+                    return babelHelpers.possibleConstructorReturn(this, Object.getPrototypeOf(PostTops).apply(this, arguments));
+                }
+
+                babelHelpers.createClass(PostTops, [{
+                    key: 'init',
+                    value: function init() {
+                        babelHelpers.get(Object.getPrototypeOf(PostTops.prototype), 'init', this).call(this);
+
+                        this.topobj = [{
+                            id: 1,
+                            topName: "单个问题被赞同总量排行",
+                            sortName: 'askActive'
+                        }, {
+                            id: 2,
+                            topName: "单个回答被点赞总量",
+                            sortName: 'answerActive'
+                        }, {
+                            id: 3,
+                            topName: "单个文章被点赞总量",
+                            sortName: 'discussActive'
+                        }, {
+                            id: 4,
+                            topName: "单个文章被评论总量",
+                            sortName: 'commentsActive'
+                        }];
+                    }
+                }, {
+                    key: 'view',
+                    value: function view() {
+                        return m(
+                            'div',
+                            { className: 'Dashboard' },
+                            m(
+                                'div',
+                                { className: 'Dashboard-options' },
+                                m(
+                                    'div',
+                                    { className: 'container' },
+                                    m(
+                                        'p',
+                                        null,
+                                        app.translator.trans('pingxx-account.admin.post_tops.tops_text')
+                                    )
+                                )
+                            ),
+                            m(
+                                'div',
+                                { className: 'UserPage-users' },
+                                m(
+                                    'div',
+                                    { className: 'container' },
+                                    this.topobj.map(function (top) {
+                                        return m(
+                                            'div',
+                                            null,
+                                            TopsItems.component({ top: top })
+                                        );
+                                    })
+                                )
+                            )
+                        );
+                    }
+                }, {
+                    key: 'config',
+                    value: function config(isInitialized) {
+                        if (isInitialized) return;
+
+                        var tops = this;
+
+                        // this.$(".top .ignore-pingxx input").change(function (e) {
+                        //     if ($(this).prop('checked')) {
+                        //         tops.topobj[$(this).attr("item_id") - 1].is_pingxx =  true;
+                        //         console.log(tops.topobj[$(this).attr("item_id") - 1].is_pingxx);
+                        //         m.lazyRedraw();
+                        //     } else {
+                        //         tops.topobj[$(this).attr("item_id") - 1].is_pingxx =  false;
+                        //     }
+                        // })
+                    }
+                }]);
+                return PostTops;
+            }(Page);
+
+            _export('default', PostTops);
+        }
+    };
+});;
+'use strict';
+
+System.register('pingxx-account/components/PostTopsItems', ['flarum/Component', 'flarum/components/Page'], function (_export, _context) {
+    "use strict";
+
+    var Component, Page, TopsItems;
+    return {
+        setters: [function (_flarumComponent) {
+            Component = _flarumComponent.default;
+        }, function (_flarumComponentsPage) {
+            Page = _flarumComponentsPage.default;
+        }],
+        execute: function () {
+            TopsItems = function (_Page) {
+                babelHelpers.inherits(TopsItems, _Page);
+
+                function TopsItems() {
+                    babelHelpers.classCallCheck(this, TopsItems);
+                    return babelHelpers.possibleConstructorReturn(this, Object.getPrototypeOf(TopsItems).apply(this, arguments));
+                }
+
+                babelHelpers.createClass(TopsItems, [{
+                    key: 'init',
+                    value: function init() {
+                        babelHelpers.get(Object.getPrototypeOf(TopsItems.prototype), 'init', this).call(this);
+                        this.top = this.props.top;
+                        this.sort = this.props.top.sortName;
+                        this.posts = [];
+
+                        this.refresh();
+                    }
+                }, {
+                    key: 'refresh',
+                    value: function refresh() {
+                        var _this2 = this;
+
+                        return this.loadResults().then(function (results) {
+                            _this2.posts = [];
+                            _this2.parseTopPosts(results);
+                        }, function () {
+                            _this2.loading = false;
+                            m.redraw();
+                        });
+                    }
+                }, {
+                    key: 'loadResults',
+                    value: function loadResults() {
+                        return app.store.find('posts', {
+                            sort: this.sortMap()[this.sort],
+                            page: {
+                                limit: 10
+                            }
+                        });
+                    }
+                }, {
+                    key: 'sortMap',
+                    value: function sortMap() {
+                        var map = {};
+                        map.same_question_count = '-same_question_count';
+                        map.praise_count = '-praise_count';
+                        map.agree_count = '-agree_count';
+
+                        return map;
+                    }
+                }, {
+                    key: 'parseTopPosts',
+                    value: function parseTopPosts(results) {
+                        [].push.apply(this.posts, results);
+
+                        this.loading = false;
+
+                        m.lazyRedraw();
+
+                        return results;
+                    }
+                }, {
+                    key: 'view',
+                    value: function view() {
+                        var _this3 = this;
+
+                        return m(
+                            'div',
+                            { className: 'top' },
+                            m(
+                                'div',
+                                { className: 'top-header' },
+                                this.top.topName
+                            ),
+                            m(
+                                'div',
+                                { className: 'top-body' },
+                                m(
+                                    'table',
+                                    { className: 'UserGrid UserGridWidth' },
+                                    m(
+                                        'tbody',
+                                        null,
+                                        this.users.map(function (user, index) {
+                                            return m(
+                                                'tr',
+                                                null,
+                                                m(
+                                                    'td',
+                                                    { className: 'ranking' },
+                                                    index + 1
+                                                ),
+                                                m(
+                                                    'td',
+                                                    null,
+                                                    user.username()
+                                                ),
+                                                m(
+                                                    'td',
+                                                    null,
+                                                    user.email()
+                                                ),
+                                                m(
+                                                    'td',
+                                                    null,
+                                                    _this3.sort == 'discussActive' ? user.discussionsCount() : _this3.sort == 'commentsActive' ? user.commentsCount() : _this3.sort == 'askActive' ? user.ask_count() : _this3.sort == 'answerActive' ? user.answer_count() : _this3.sort == 'praise_count' ? user.praise_count() : _this3.sort == 'agree_count' ? user.agree_count() : _this3.sort == 'same_question_count' ? user.same_question_count() : ''
+                                                )
+                                            );
+                                        })
+                                    )
+                                )
+                            )
+                        );
+                    }
+                }, {
+                    key: 'config',
+                    value: function config(isInitialized) {
+                        if (isInitialized) return;
+                        var mytop = this;
+                        $(".top .ignore-pingxx input").change(function (e) {
+                            if ($(this).prop('checked')) {
+                                if (mytop.top.id == $(this).attr('item_id')) {
+                                    mytop.top.is_pingxx = true;
+                                    console.log(mytop.sort);
+                                    console.log(mytop.top);
+                                    mytop.refresh();
+                                }
+                            } else {
+                                if (mytop.top.id == $(this).attr('item_id')) {
+                                    mytop.top.is_pingxx = false;
+                                    console.log(mytop.top);
+                                    mytop.refresh();
+                                }
+                            }
+                        });
+                    }
+                }]);
+                return TopsItems;
+            }(Page);
+
+            _export('default', TopsItems);
         }
     };
 });;
@@ -2193,10 +2493,10 @@ System.register('pingxx-account/components/UsersPage', ['flarum/components/Page'
 });;
 'use strict';
 
-System.register('pingxx-account/main', ['flarum/extend', 'flarum/app', 'flarum/Model', 'pingxx-account/addUsersPane', 'flarum/components/AdminNav', 'pingxx-account/addTopsPane', 'pingxx-account/addTagTop', 'flarum/tags/models/Tag'], function (_export, _context) {
+System.register('pingxx-account/main', ['flarum/extend', 'flarum/app', 'flarum/Model', 'pingxx-account/addUsersPane', 'flarum/components/AdminNav', 'pingxx-account/addTopsPane', 'pingxx-account/addTagTop', 'pingxx-account/addPostTop', 'flarum/tags/models/Tag'], function (_export, _context) {
     "use strict";
 
-    var extend, app, Model, addUsersPane, AdminNav, addTopsPane, addTagTop, Tag;
+    var extend, app, Model, addUsersPane, AdminNav, addTopsPane, addTagTop, addPostTop, Tag;
     return {
         setters: [function (_flarumExtend) {
             extend = _flarumExtend.extend;
@@ -2212,6 +2512,8 @@ System.register('pingxx-account/main', ['flarum/extend', 'flarum/app', 'flarum/M
             addTopsPane = _pingxxAccountAddTopsPane.default;
         }, function (_pingxxAccountAddTagTop) {
             addTagTop = _pingxxAccountAddTagTop.default;
+        }, function (_pingxxAccountAddPostTop) {
+            addPostTop = _pingxxAccountAddPostTop.default;
         }, function (_flarumTagsModelsTag) {
             Tag = _flarumTagsModelsTag.default;
         }],
@@ -2226,7 +2528,10 @@ System.register('pingxx-account/main', ['flarum/extend', 'flarum/app', 'flarum/M
                 app.store.models.users.prototype.agree_count = Model.attribute('agree_count');
                 app.store.models.users.prototype.same_question_count = Model.attribute('same_question_count');
 
-                app.store.models.discussions.prototype.agree_count = Model.attribute('is_article');
+                app.store.models.posts.prototype.same_question_count = Model.attribute('same_question_count');
+
+                app.store.models.discussions.prototype.is_article = Model.attribute('is_article');
+                app.store.models.discussions.prototype.praise_count = Model.attribute('praise_count');
 
                 app.store.models.tags = Tag;
                 app.store.models.tags.prototype.is_article = Model.attribute('is_article');
@@ -2239,6 +2544,7 @@ System.register('pingxx-account/main', ['flarum/extend', 'flarum/app', 'flarum/M
                 addUsersPane();
                 addTopsPane();
                 addTagTop();
+                addPostTop();
             });
         }
     };

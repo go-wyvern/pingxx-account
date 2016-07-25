@@ -90,8 +90,8 @@ export default class Dashboard extends Page {
 
         var nowhour = new Date().getHours();
         results.map(discussion => {
-            console.log(discussion);
-            if (discussion.is_article) {
+            console.log(discussion.is_article());
+            if (discussion.is_article()) {
                 this.flarum.discussions.push(discussion);
                 if ((new Date().getTime() - discussion.startTime()) / (nowhour * minute * 60) < 1) {
                     this.flarum.totay_discussions.push(discussion);

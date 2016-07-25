@@ -21,9 +21,13 @@ pingxx-account:
       tops_text: Ping++开发者论坛榜单
       tag-tops_button: 分类榜单
       tag-tops_text: 分类榜单
+      post_tops_button: 文章与问题榜单
+      post_tops_text: 文章与问题榜单
 
     tops:
       tops_text: 用户榜单top20
+    post_tops:
+      tops_text: 问题与文章榜单top10
 
     edit_user:
       title: 更新用户

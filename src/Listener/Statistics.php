@@ -43,17 +43,17 @@ class Statistics
         $events->listen(PostWasBest::class, [$this, 'whenPostWasBest']);
         $events->listen(PostWasUnbest::class, [$this, 'whenPostWasUnbest']);
     }
-
+    //采纳答案
     public function whenPostWasBest(PostWasBest $event)
     {
-        $this->updateAgreeCount($event->user, 1);
+            $this->updateAgreeCount($event->user, 1);
     }
-
+    //取消采纳答案
     public function whenPostWasUnbest(PostWasUnbest $event)
     {
         $this->updateAgreeCount($event->user, -1);
     }
-
+    //赞
     public function whenPostWasLiked(PostWasLiked $event)
     {
         if ($event->post->is_start) {
@@ -61,9 +61,8 @@ class Statistics
         } else {
             $this->updatePraiseCount($event->user, 1);
         }
-
     }
-
+    //取消赞
     public function whenPostWasUnLiked(PostWasUnLiked $event)
     {
         if ($event->post->is_start) {

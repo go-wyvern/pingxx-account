@@ -6,6 +6,7 @@ import AdminNav from 'flarum/components/AdminNav';
 
 import addTopsPane from 'pingxx-account/addTopsPane';
 import addTagTop from 'pingxx-account/addTagTop';
+import addPostTop from 'pingxx-account/addPostTop';
 import Tag from 'flarum/tags/models/Tag';
 
 
@@ -18,8 +19,11 @@ app.initializers.add('pingxx-account', () => {
     app.store.models.users.prototype.agree_count = Model.attribute('agree_count');
     app.store.models.users.prototype.same_question_count = Model.attribute('same_question_count');
 
-    app.store.models.discussions.prototype.agree_count = Model.attribute('is_article');
-    
+    app.store.models.posts.prototype.same_question_count = Model.attribute('same_question_count');
+
+    app.store.models.discussions.prototype.is_article = Model.attribute('is_article');
+    app.store.models.discussions.prototype.praise_count = Model.attribute('praise_count');
+
     app.store.models.tags = Tag;
     app.store.models.tags.prototype.is_article = Model.attribute('is_article');
     app.store.models.tags.prototype.questions_count = Model.attribute('questions_count');
@@ -31,5 +35,6 @@ app.initializers.add('pingxx-account', () => {
     addUsersPane();
     addTopsPane();
     addTagTop();
+    addPostTop();
 
 });
